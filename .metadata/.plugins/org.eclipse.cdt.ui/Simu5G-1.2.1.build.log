@@ -1,0 +1,8 @@
+08:50:35 **** Incremental Build of configuration gcc-release for project Simu5G-1.2.1 ****
+make MODE=release all 
+make[1]: Entering directory '/home/simu5g/immune/Simu5G-1.2.1/src'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/simu5g/immune/Simu5G-1.2.1/src'
+
+08:50:35 Build Finished. 0 errors, 0 warnings. (took 330ms)
+

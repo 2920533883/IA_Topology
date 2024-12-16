@@ -1,0 +1,3736 @@
+file 754282 1734321112                                          
+version 2
+run S2C-0-20241008-11:16:54-4579
+attr configname S2C
+attr datetime 20241008-11:16:54
+attr datetimef 20241008-111654
+attr experiment S2C
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network S2C
+attr processid 4579
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config image-path ../../../Downloads/TSN5G-master/inet4.5/images:../../simu5G/images
+config network S2C
+config *.*.macCellId 1
+config *.*.masterId 1
+config *.*.nrMacCellId 1
+config *.*.nrMasterId 1
+config *.u*.DSTT.DSTT.destAddress "\"Server\""
+config *.Client1.numApps 1
+config *.Client1.app[*].typename UdpSourceApp
+config *.Client1.app[*].io.destAddress "\"Server\""
+config *.Client1.app[*].io.localPort 1000+ancestorIndex(1)
+config *.Client1.app[0].display-name TCU
+config *.Client1.app[0].io.destPort 1001
+config *.Client1.app[0].source.packetLength 77B
+config *.Client1.app[0].source.productionInterval 10ms
+config *.Server*.numApps 2
+config *.Server.app[*].typename UdpSinkApp
+config *.Server.app[0].display-name besteffort
+config *.Server.app[1].display-name video
+config *.Server.app[*].io.localPort 1000+ancestorIndex(1)
+config *.*.hasOutgoingStreams true
+config *.*.hasIncomingStreams true
+config *.Client*.bridging.streamIdentifier.identifier.mapping "[{stream: \"besteffort\", packetFilter: expr(udp.destPort == 1000)},\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{stream: \"video\", packetFilter: expr(udp.destPort == 1001)}]"
+config *.Client*.bridging.streamCoder.encoder.mapping "[{stream: \"besteffort\", pcp: 0},\n\t\t\t\t\t\t\t\t\t\t\t\t\t{stream: \"video\", pcp: 4}]"
+config *.Server.bridging.streamIdentifier.identifier.mapping "[{stream: \"besteffort\", packetFilter: expr(udp.destPort == 1000)},\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t{stream: \"video\", packetFilter: expr(udp.destPort == 1001)}]"
+config *.Server.bridging.streamCoder.encoder.mapping "[{stream: \"besteffort\", pcp: 0},\n\t\t\t\t\t\t\t\t\t\t\t\t\t{stream: \"video\", pcp: 4}]"
+config *.tsnSwitch.bridging.streamCoder.decoder.mapping "[{pcp: 0, stream: \"besteffort\"},\n                                                 {pcp: 4, stream: \"video\"}]"
+config *.tsnSwitch.bridging.streamCoder.encoder.mapping "[{stream: \"besteffort\", pcp: 0},\n\t\t\t\t\t\t\t\t\t\t\t\t\t{stream: \"video\", pcp: 4}]"
+config *.tsnSwitch.hasIngressTrafficFiltering true
+config *.tsnSwitch.bridging.streamFilter.ingress.typename SimpleIeee8021qFilter
+config *.tsnSwitch.bridging.streamFilter.ingress.numStreams 2
+config *.tsnSwitch.bridging.streamFilter.ingress.classifier.mapping "{besteffort: 0,video: 1}"
+config *.tsnSwitch.bridging.streamFilter.ingress.*[0].display-name besteffort
+config *.tsnSwitch.bridging.streamFilter.ingress.*[1].display-name video
+config *.tsnSwitch.bridging.streamFilter.ingress.meter[*].typename EligibilityTimeMeter
+config *.tsnSwitch.bridging.streamFilter.ingress.meter[*].committedInformationRate 1Mbps
+config *.tsnSwitch.bridging.streamFilter.ingress.meter[*].committedBurstSize 1kB
+config *.tsnSwitch.bridging.streamFilter.ingress.filter[*].typename EligibilityTimeFilter
+config *.tsnSwitch.hasEgressTrafficShaping true
+config *.tsnSwitch.bridging.directionReverser.reverser.excludeEncapsulationProtocols "[\"ieee8021qctag\"]"
+config *.tsnSwitch.eth[*].macLayer.queue.numTrafficClasses 2
+config *.tsnSwitch.eth[*].macLayer.queue.*[0].display-name besteffort
+config *.tsnSwitch.eth[*].macLayer.queue.*[1].display-name video
+config *.tsnSwitch.eth[*].macLayer.queue.queue[0].typename EligibilityTimeQueue
+config *.tsnSwitch.eth[*].macLayer.queue.queue[1].typename EligibilityTimeQueue
+config *.tsnSwitch.eth[*].macLayer.queue.transmissionSelectionAlgorithm[0].typename Ieee8021qAsynchronousShaper
+config *.tsnSwitch.eth[*].macLayer.queue.transmissionSelectionAlgorithm[1].typename Ieee8021qAsynchronousShaper
+
+vector 0 S2C.Server.eth[0].phyLayer.interFrameGapInserter interpacketGap:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(interpacketGapStarted) - count(interpacketGapEnded)"
+attr title "interpacket gap state"
+attr type int
+0	35602 16 0 0 0 0 2 0 0 0 0
+vector 1 S2C.Server.eth[0].phyLayer.transmitter transmitting:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(transmissionStarted) - count(transmissionEnded)"
+attr title "transmitting state"
+attr type int
+1	35618 16 0 0 0 0 2 0 0 0 0
+vector 2 S2C.Server.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+2	35634 8 0 0 0 0 1 0 0 0 0
+2	70726 19 264 264 0.01504191 0.01504191 1 1 1 1 1
+2	111884 2085 373 16496 0.02004191 0.99504191 98 2 99 4949 328349
+vector 3 S2C.Server.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+3	35642 8 0 0 0 0 1 0 0 0 0
+vector 4 S2C.Server.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+4	35650 8 0 0 0 0 1 0 0 0 0
+vector 5 S2C.tsnSwitch.eth[0].phyLayer.interFrameGapInserter interpacketGap:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(interpacketGapStarted) - count(interpacketGapEnded)"
+attr title "interpacket gap state"
+attr type int
+5	35658 16 0 0 0 0 2 0 0 0 0
+vector 6 S2C.tsnSwitch.eth[0].phyLayer.transmitter transmitting:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(transmissionStarted) - count(transmissionEnded)"
+attr title "transmitting state"
+attr type int
+6	35674 16 0 0 0 0 2 0 0 0 0
+vector 7 S2C.tsnSwitch.eth[1].phyLayer.interFrameGapInserter interpacketGap:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(interpacketGapStarted) - count(interpacketGapEnded)"
+attr title "interpacket gap state"
+attr type int
+7	35690 16 0 0 0 0 2 0 0 0 0
+7	70745 19 261 261 0.01504186 0.01504186 1 1 1 1 1
+7	74334 19 268 268 0.01504282 0.01504282 1 0 0 0 0
+7	113969 3990 370 16499 0.02004186 0.99504282 196 0 1 98 98
+vector 8 S2C.tsnSwitch.eth[1].phyLayer.transmitter transmitting:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(transmissionStarted) - count(transmissionEnded)"
+attr title "transmitting state"
+attr type int
+8	35706 16 0 0 0 0 2 0 0 0 0
+8	70764 38 258 261 0.01503106 0.01504186 2 0 1 1 1
+8	74519 19 367 367 0.02003106 0.02003106 1 1 1 1 1
+8	117959 3971 370 16493 0.02004186 0.99504186 195 0 1 97 97
+vector 9 S2C.upf.ppp[0].ppp transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source transmissionStateChanged
+attr title "tx state"
+9	35722 8 0 0 0 0 1 0 0 0 0
+vector 10 S2C.upf.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+10	35730 9 0 0 0 0 1 0 0 0 0
+10	70802 20 251 251 0.01501653 0.01501653 1 1 1 1 1
+10	74538 20 360 360 0.02001653 0.02001653 1 2 2 2 4
+10	121930 2163 578 16483 0.03501653 0.99501653 97 3 99 4947 328345
+vector 11 S2C.upf.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+11	35739 9 0 0 0 0 1 0 0 0 0
+vector 12 S2C.upf.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+12	35748 9 0 0 0 0 1 0 0 0 0
+vector 13 S2C.upf.NWTT.phyLayer.interFrameGapInserter interpacketGap:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(interpacketGapStarted) - count(interpacketGapEnded)"
+attr title "interpacket gap state"
+attr type int
+13	35757 18 0 0 0 0 2 0 0 0 0
+13	70822 40 256 259 0.01503101 0.01503197 2 0 1 1 1
+13	74558 20 365 365 0.02003101 0.02003101 1 1 1 1 1
+13	124093 4166 368 16491 0.02003197 0.99503197 195 0 1 97 97
+vector 14 S2C.upf.NWTT.phyLayer.transmitter transmitting:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(transmissionStarted) - count(transmissionEnded)"
+attr title "transmitting state"
+attr type int
+14	35775 18 0 0 0 0 2 0 0 0 0
+14	70862 40 255 256 0.01501653 0.01503101 2 0 1 1 1
+14	74578 40 364 365 0.02001653 0.02003101 2 0 1 1 1
+14	128259 4146 582 16488 0.03501653 0.99503101 194 0 1 97 97
+vector 15 S2C.gnb.pppIf.ppp transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source transmissionStateChanged
+attr title "tx state"
+15	35793 9 0 0 0 0 1 0 0 0 0
+15	42603 15 240 240 0.015 0.015 1 1 1 1 1
+15	70902 20 248 248 0.01501648 0.01501648 1 0 0 0 0
+15	74618 34 328 357 0.02 0.02001648 2 0 1 1 1
+15	132405 3603 567 16480 0.035 0.99501648 194 0 1 97 97
+vector 16 S2C.gnb.pppMEHostIf.ppp transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source transmissionStateChanged
+attr title "tx state"
+16	35802 9 0 0 0 0 1 0 0 0 0
+vector 17 S2C.gnb.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+17	35811 9 0 0 0 0 1 0 0 0 0
+vector 18 S2C.gnb.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+18	35820 9 0 0 0 0 1 0 0 0 0
+vector 19 S2C.gnb.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+19	35829 9 0 0 0 0 1 0 0 0 0
+vector 20 S2C.Client1.eth[0].phyLayer.interFrameGapInserter interpacketGap:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(interpacketGapStarted) - count(interpacketGapEnded)"
+attr title "interpacket gap state"
+attr type int
+20	35838 94 0 173 0 0.01001176 6 0 1 2 2
+20	74652 39 343 355 0.0200108 0.02001176 2 0 1 1 1
+20	136008 4049 492 16409 0.0300108 0.99001176 194 0 1 97 97
+vector 21 S2C.Client1.eth[0].phyLayer.transmitter transmitting:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(transmissionStarted) - count(transmissionEnded)"
+attr title "transmitting state"
+attr type int
+21	35932 79 0 161 0 0.0100108 6 0 1 2 2
+21	74691 33 317 343 0.02 0.0200108 2 0 1 1 1
+21	140057 3457 480 16397 0.03 0.9900108 194 0 1 97 97
+vector 22 S2C.Client1.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+22	36011 9 0 0 0 0 1 0 0 0 0
+vector 23 S2C.Client1.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+23	36020 9 0 0 0 0 1 0 0 0 0
+vector 24 S2C.Client1.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+24	36029 9 0 0 0 0 1 0 0 0 0
+vector 25 S2C.u1.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+25	36038 9 0 0 0 0 1 0 0 0 0
+vector 26 S2C.u1.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+26	36047 9 0 0 0 0 1 0 0 0 0
+vector 27 S2C.u1.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+27	36056 9 0 0 0 0 1 0 0 0 0
+vector 28 S2C.u1.DSTT.phyLayer.interFrameGapInserter interpacketGap:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(interpacketGapStarted) - count(interpacketGapEnded)"
+attr title "interpacket gap state"
+attr type int
+28	36065 18 0 0 0 0 2 0 0 0 0
+vector 29 S2C.u1.DSTT.phyLayer.transmitter transmitting:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(transmissionStarted) - count(transmissionEnded)"
+attr title "transmitting state"
+attr type int
+29	36083 18 0 0 0 0 2 0 0 0 0
+vector 30 S2C.Client2.eth[0].phyLayer.interFrameGapInserter interpacketGap:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(interpacketGapStarted) - count(interpacketGapEnded)"
+attr title "interpacket gap state"
+attr type int
+30	36101 18 0 0 0 0 2 0 0 0 0
+vector 31 S2C.Client2.eth[0].phyLayer.transmitter transmitting:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(transmissionStarted) - count(transmissionEnded)"
+attr title "transmitting state"
+attr type int
+31	36119 18 0 0 0 0 2 0 0 0 0
+vector 32 S2C.Client2.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+32	36137 9 0 0 0 0 1 0 0 0 0
+vector 33 S2C.Client2.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+33	36146 9 0 0 0 0 1 0 0 0 0
+vector 34 S2C.Client2.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+34	36155 9 0 0 0 0 1 0 0 0 0
+vector 35 S2C.u2.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetSentToUpper
+attr title "packets passed up, count"
+35	36164 9 0 0 0 0 1 0 0 0 0
+vector 36 S2C.u2.udp droppedPkWrongPort:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+36	36173 9 0 0 0 0 1 0 0 0 0
+vector 37 S2C.u2.udp droppedPkBadChecksum:vector(count) ETV
+attr interpolationmode none
+attr recordingmode vector(count)
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+37	36182 9 0 0 0 0 1 0 0 0 0
+vector 38 S2C.u2.DSTT.phyLayer.interFrameGapInserter interpacketGap:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(interpacketGapStarted) - count(interpacketGapEnded)"
+attr title "interpacket gap state"
+attr type int
+38	36191 18 0 0 0 0 2 0 0 0 0
+vector 39 S2C.u2.DSTT.phyLayer.transmitter transmitting:vector ETV
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "count(transmissionStarted) - count(transmissionEnded)"
+attr title "transmitting state"
+attr type int
+39	36209 18 0 0 0 0 2 0 0 0 0
+vector 40 S2C.u1.cellularNic.phy servingCell:vector ETV
+attr recordingmode vector
+attr source servingCell
+attr title "ID of the serving eNodeB for the UE"
+attr unit ""
+40	36227 9 0 0 0 0 1 1 1 1 1
+vector 41 S2C.u1.cellularNic.nrPhy servingCell:vector ETV
+attr recordingmode vector
+attr source servingCell
+attr title "ID of the serving eNodeB for the UE"
+attr unit ""
+41	36236 9 0 0 0 0 1 1 1 1 1
+vector 42 S2C.u2.cellularNic.phy servingCell:vector ETV
+attr recordingmode vector
+attr source servingCell
+attr title "ID of the serving eNodeB for the UE"
+attr unit ""
+42	36245 9 0 0 0 0 1 1 1 1 1
+vector 43 S2C.u2.cellularNic.nrPhy servingCell:vector ETV
+attr recordingmode vector
+attr source servingCell
+attr title "ID of the serving eNodeB for the UE"
+attr unit ""
+43	36254 9 0 0 0 0 1 1 1 1 1
+vector 44 S2C.tsnSwitch.bridging.streamFilter.ingress.meter[0] numTokens:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.besteffort
+attr recordingmode vector
+attr source tokensChanged
+attr title "number of tokens"
+attr unit tk
+44	36263 12 0 0 0 0 1 8000 8000 8000 64000000
+vector 45 S2C.tsnSwitch.bridging.streamFilter.ingress.meter[1] numTokens:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source tokensChanged
+attr title "number of tokens"
+attr unit tk
+45	36275 12 0 0 0 0 1 8000 8000 8000 64000000
+45	70922 60 257 257 0 0.01503106 3 7160 8000 23160 179265600
+45	74724 69 366 366 0.01587106 0.02003106 3 7160 8000 23160 179265600
+45	143514 7092 584 16489 0.02087106 0.99503106 291 7160 8000 2246520 17388763200
+vector 46 S2C.tsnSwitch.eth[0].macLayer.queue.transmissionSelectionAlgorithm[0] gateState:vector ETV
+attr enum CLOSED,OPEN
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.besteffort
+attr recordingmode vector
+attr source gateStateChanged
+attr title "gate state"
+attr type enum
+46	36287 18 0 0 0 0 2 1 1 2 2
+vector 47 S2C.tsnSwitch.eth[0].macLayer.queue.transmissionSelectionAlgorithm[0] remainingEligibilityTime:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.besteffort
+attr recordingmode vector
+attr source remainingEligibilityTimeChanged
+attr title "remaining eligibility time"
+attr unit s
+47	36305 9 0 0 0 0 1 0 0 0 0
+47	741453 17 16550 16550 0.999 0.999 1 0 0 0 0
+vector 48 S2C.tsnSwitch.eth[0].macLayer.queue.transmissionSelectionAlgorithm[1] gateState:vector ETV
+attr enum CLOSED,OPEN
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.video
+attr recordingmode vector
+attr source gateStateChanged
+attr title "gate state"
+attr type enum
+48	36314 18 0 0 0 0 2 1 1 2 2
+vector 49 S2C.tsnSwitch.eth[0].macLayer.queue.transmissionSelectionAlgorithm[1] remainingEligibilityTime:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.video
+attr recordingmode vector
+attr source remainingEligibilityTimeChanged
+attr title "remaining eligibility time"
+attr unit s
+49	36332 9 0 0 0 0 1 0 0 0 0
+49	741470 17 16550 16550 0.999 0.999 1 0 0 0 0
+vector 50 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionSelectionAlgorithm[0] gateState:vector ETV
+attr enum CLOSED,OPEN
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.besteffort
+attr recordingmode vector
+attr source gateStateChanged
+attr title "gate state"
+attr type enum
+50	36341 18 0 0 0 0 2 1 1 2 2
+vector 51 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionSelectionAlgorithm[0] remainingEligibilityTime:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.besteffort
+attr recordingmode vector
+attr source remainingEligibilityTimeChanged
+attr title "remaining eligibility time"
+attr unit s
+51	36359 9 0 0 0 0 1 0 0 0 0
+51	741487 17 16550 16550 0.999 0.999 1 0 0 0 0
+vector 52 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionSelectionAlgorithm[1] gateState:vector ETV
+attr enum CLOSED,OPEN
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source gateStateChanged
+attr title "gate state"
+attr type enum
+52	36368 18 0 0 0 0 2 1 1 2 2
+vector 53 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionSelectionAlgorithm[1] remainingEligibilityTime:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source remainingEligibilityTimeChanged
+attr title "remaining eligibility time"
+attr unit s
+53	36386 9 0 0 0 0 1 0 0 0 0
+53	70982 80 257 258 0.01503106 0.01503106 4 0 0 0 0
+53	74793 80 366 367 0.02003106 0.02003106 4 0 0 0 0
+53	150606 8292 584 16490 0.03503106 0.99503106 388 0 0 0 0
+53	741504 17 16550 16550 0.999 0.999 1 0 0 0 0
+vector 54 S2C.Client1.app[0].source packetLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.Client1.TCU.source
+attr recordingmode vector
+attr source packetLength(packetPushed)
+attr title "packet lengths"
+attr unit b
+54	36395 27 0 144 0 0.01 2 616 616 1232 758912
+54	74873 16 312 312 0.02 0.02 1 616 616 616 379456
+54	158898 1675 471 16376 0.03 0.99 97 616 616 59752 36807232
+vector 55 S2C.tsnSwitch.bridging.streamFilter.ingress.gate[0] gateState:vector ETV
+attr enum CLOSED,OPEN
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.besteffort
+attr recordingmode vector
+attr source gateStateChanged
+attr title "gate state"
+attr type enum
+55	36422 9 0 0 0 0 1 1 1 1 1
+55	741521 17 16550 16550 0.999 0.999 1 1 1 1 1
+vector 56 S2C.tsnSwitch.bridging.streamFilter.ingress.gate[1] gateState:vector ETV
+attr enum CLOSED,OPEN
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source gateStateChanged
+attr title "gate state"
+attr type enum
+56	36431 9 0 0 0 0 1 1 1 1 1
+56	741538 17 16550 16550 0.999 0.999 1 1 1 1 1
+vector 57 S2C.tsnSwitch.eth[0].macLayer.queue.transmissionGate[0] gateState:vector ETV
+attr enum CLOSED,OPEN
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.besteffort
+attr recordingmode vector
+attr source gateStateChanged
+attr title "gate state"
+attr type enum
+57	36440 9 0 0 0 0 1 1 1 1 1
+vector 58 S2C.tsnSwitch.eth[0].macLayer.queue.transmissionGate[0] guardBandState:vector ETV
+attr enum ON,OFF
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.besteffort
+attr recordingmode vector
+attr source guardBandStateChanged
+attr title "guard band state"
+attr type enum
+58	36449 9 0 0 0 0 1 0 0 0 0
+58	741555 17 16550 16550 0.999 0.999 1 0 0 0 0
+vector 59 S2C.tsnSwitch.eth[0].macLayer.queue.transmissionGate[1] gateState:vector ETV
+attr enum CLOSED,OPEN
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.video
+attr recordingmode vector
+attr source gateStateChanged
+attr title "gate state"
+attr type enum
+59	36458 9 0 0 0 0 1 1 1 1 1
+vector 60 S2C.tsnSwitch.eth[0].macLayer.queue.transmissionGate[1] guardBandState:vector ETV
+attr enum ON,OFF
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.video
+attr recordingmode vector
+attr source guardBandStateChanged
+attr title "guard band state"
+attr type enum
+60	36467 9 0 0 0 0 1 0 0 0 0
+60	741572 17 16550 16550 0.999 0.999 1 0 0 0 0
+vector 61 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionGate[0] gateState:vector ETV
+attr enum CLOSED,OPEN
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.besteffort
+attr recordingmode vector
+attr source gateStateChanged
+attr title "gate state"
+attr type enum
+61	36476 9 0 0 0 0 1 1 1 1 1
+vector 62 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionGate[0] guardBandState:vector ETV
+attr enum ON,OFF
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.besteffort
+attr recordingmode vector
+attr source guardBandStateChanged
+attr title "guard band state"
+attr type enum
+62	36485 9 0 0 0 0 1 0 0 0 0
+62	741589 17 16550 16550 0.999 0.999 1 0 0 0 0
+vector 63 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionGate[1] gateState:vector ETV
+attr enum CLOSED,OPEN
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source gateStateChanged
+attr title "gate state"
+attr type enum
+63	36494 9 0 0 0 0 1 1 1 1 1
+vector 64 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionGate[1] guardBandState:vector ETV
+attr enum ON,OFF
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source guardBandStateChanged
+attr title "guard band state"
+attr type enum
+64	36503 9 0 0 0 0 1 0 0 0 0
+64	741606 17 16550 16550 0.999 0.999 1 0 0 0 0
+vector 65 S2C.Client1.app[0].io packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.Client1.TCU.io
+attr recordingmode vector(packetBytes)
+attr source packetSent
+attr title "packets sent, packetBytes"
+65	36512 26 11 145 0 0.01 2 77 77 154 11858
+65	74889 15 313 313 0.02 0.02 1 77 77 77 5929
+65	160573 1578 476 16381 0.03 0.99 97 77 77 7469 575113
+vector 66 S2C.Client1.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSent
+attr title "packets sent, packetBytes"
+66	36538 26 22 146 0 0.01 2 85 85 170 14450
+66	74904 15 314 314 0.02 0.02 1 85 85 85 7225
+66	162151 1578 477 16382 0.03 0.99 97 85 85 8245 700825
+vector 67 S2C.Client1.bridging.streamIdentifier.identifier incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+67	36564 28 24 148 0 0.01 2 840 840 1680 1411200
+67	74919 16 316 316 0.02 0.02 1 840 840 840 705600
+67	163729 1675 479 16384 0.03 0.99 97 840 840 81480 68443200
+vector 68 S2C.Client1.bridging.streamIdentifier.identifier outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+68	36592 28 24 148 0 0.01 2 840 840 1680 1411200
+68	74935 16 316 316 0.02 0.02 1 840 840 840 705600
+68	165404 1675 479 16384 0.03 0.99 97 840 840 81480 68443200
+vector 69 S2C.Client1.bridging.streamCoder.encoder incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+69	36620 28 24 148 0 0.01 2 840 840 1680 1411200
+69	74951 16 316 316 0.02 0.02 1 840 840 840 705600
+69	167079 1675 479 16384 0.03 0.99 97 840 840 81480 68443200
+vector 70 S2C.Client1.bridging.streamCoder.encoder outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+70	36648 28 24 148 0 0.01 2 840 840 1680 1411200
+70	74967 16 316 316 0.02 0.02 1 840 840 840 705600
+70	168754 1675 479 16384 0.03 0.99 97 840 840 81480 68443200
+vector 71 S2C.Client1.ieee8021q.qTagHeaderInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+71	36676 28 24 148 0 0.01 2 840 840 1680 1411200
+71	74983 16 316 316 0.02 0.02 1 840 840 840 705600
+71	170429 1675 479 16384 0.03 0.99 97 840 840 81480 68443200
+vector 72 S2C.Client1.ieee8021q.qTagHeaderInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+72	36704 28 24 148 0 0.01 2 872 872 1744 1520768
+72	74999 16 316 316 0.02 0.02 1 872 872 872 760384
+72	172104 1675 479 16384 0.03 0.99 97 872 872 84584 73757248
+vector 73 S2C.Client1.ethernet.macHeaderInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+73	36732 28 24 148 0 0.01 2 872 872 1744 1520768
+73	75015 16 316 316 0.02 0.02 1 872 872 872 760384
+73	173779 1675 479 16384 0.03 0.99 97 872 872 84584 73757248
+vector 74 S2C.Client1.ethernet.macHeaderInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+74	36760 28 24 148 0 0.01 2 984 984 1968 1936512
+74	75031 16 316 316 0.02 0.02 1 984 984 984 968256
+74	175454 1675 479 16384 0.03 0.99 97 984 984 95448 93920832
+vector 75 S2C.Client1.ethernet.paddingInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+75	36788 28 24 148 0 0.01 2 984 984 1968 1936512
+75	75047 16 316 316 0.02 0.02 1 984 984 984 968256
+75	177129 1675 479 16384 0.03 0.99 97 984 984 95448 93920832
+vector 76 S2C.Client1.ethernet.paddingInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+76	36816 28 24 148 0 0.01 2 984 984 1968 1936512
+76	75063 16 316 316 0.02 0.02 1 984 984 984 968256
+76	178804 1675 479 16384 0.03 0.99 97 984 984 95448 93920832
+vector 77 S2C.Client1.ethernet.fcsInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+77	36844 28 24 148 0 0.01 2 984 984 1968 1936512
+77	75079 16 316 316 0.02 0.02 1 984 984 984 968256
+77	180479 1675 479 16384 0.03 0.99 97 984 984 95448 93920832
+vector 78 S2C.Client1.ethernet.fcsInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+78	36872 30 24 148 0 0.01 2 1016 1016 2032 2064512
+78	75095 17 316 316 0.02 0.02 1 1016 1016 1016 1032256
+78	182154 1772 479 16384 0.03 0.99 97 1016 1016 98552 100128832
+vector 79 S2C.Client1.eth[0].macLayer.queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+79	36902 30 24 148 0 0.01 2 1016 1016 2032 2064512
+79	75112 17 316 316 0.02 0.02 1 1016 1016 1016 1032256
+79	183926 1772 479 16384 0.03 0.99 97 1016 1016 98552 100128832
+vector 80 S2C.Client1.eth[0].macLayer.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+80	36932 48 24 149 0 0.01 4 0 1 2 2
+80	75129 28 316 317 0.02 0.02 2 0 1 1 1
+80	185698 2962 479 16385 0.03 0.99 194 0 1 97 97
+vector 81 S2C.Client1.eth[0].macLayer.queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+81	36980 54 24 149 0 0.01 4 0 1016 2032 2064512
+81	75157 31 316 317 0.02 0.02 2 0 1016 1016 1032256
+81	188660 3253 479 16385 0.03 0.99 194 0 1016 98552 100128832
+vector 82 S2C.Client1.eth[0].macLayer.queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+82	37034 24 25 149 0 0.01 2 0 0 0 0
+82	75188 14 317 317 0.02 0.02 1 0 0 0 0
+82	191913 1481 480 16385 0.03 0.99 97 0 0 0 0
+vector 83 S2C.Client1.eth[0].macLayer.queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+83	37058 30 25 149 0 0.01 2 1016 1016 2032 2064512
+83	75202 17 317 317 0.02 0.02 1 1016 1016 1016 1032256
+83	193394 1772 480 16385 0.03 0.99 97 1016 1016 98552 100128832
+vector 84 S2C.Client1.eth[0].macLayer.server incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "incoming packet lengths"
+attr unit b
+84	37088 30 25 149 0 0.01 2 1016 1016 2032 2064512
+84	75219 17 317 317 0.02 0.02 1 1016 1016 1016 1032256
+84	195166 1772 480 16385 0.03 0.99 97 1016 1016 98552 100128832
+vector 85 S2C.Client1.eth[0].macLayer.server outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushed)
+attr title "outgoing packet lengths"
+attr unit b
+85	37118 30 25 149 0 0.01 2 1016 1016 2032 2064512
+85	75236 17 317 317 0.02 0.02 1 1016 1016 1016 1032256
+85	196938 1772 480 16385 0.03 0.99 97 1016 1016 98552 100128832
+vector 86 S2C.Client1.eth[0].macLayer.outboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+86	37148 30 25 149 0 0.01 2 1016 1016 2032 2064512
+86	75253 17 317 317 0.02 0.02 1 1016 1016 1016 1032256
+86	198710 1772 480 16385 0.03 0.99 97 1016 1016 98552 100128832
+vector 87 S2C.Client1.eth[0].macLayer.outboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+87	37178 30 25 149 0 0.01 2 1016 1016 2032 2064512
+87	75270 17 317 317 0.02 0.02 1 1016 1016 1016 1032256
+87	200482 1772 480 16385 0.03 0.99 97 1016 1016 98552 100128832
+vector 88 S2C.Client1.eth[0].phyLayer.phyHeaderInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+88	37208 30 25 149 0 0.01 2 1016 1016 2032 2064512
+88	75287 17 317 317 0.02 0.02 1 1016 1016 1016 1032256
+88	202254 1772 480 16385 0.03 0.99 97 1016 1016 98552 100128832
+vector 89 S2C.Client1.eth[0].phyLayer.phyHeaderInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+89	37238 30 25 149 0 0.01 2 1080 1080 2160 2332800
+89	75304 17 317 317 0.02 0.02 1 1080 1080 1080 1166400
+89	204026 1772 480 16385 0.03 0.99 97 1080 1080 104760 113140800
+vector 90 S2C.Client1.eth[0].phyLayer.outboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+90	37268 30 25 149 0 0.01 2 1080 1080 2160 2332800
+90	75321 17 317 317 0.02 0.02 1 1080 1080 1080 1166400
+90	205798 1772 480 16385 0.03 0.99 97 1080 1080 104760 113140800
+vector 91 S2C.Client1.eth[0].phyLayer.outboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+91	37298 30 25 149 0 0.01 2 1080 1080 2160 2332800
+91	75338 17 317 317 0.02 0.02 1 1080 1080 1080 1166400
+91	207570 1772 480 16385 0.03 0.99 97 1080 1080 104760 113140800
+vector 92 S2C.u1.DSTT.phyLayer.receiver receptionTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetDuration(receptionEnded)
+attr title "reception time"
+attr unit s
+92	37328 51 26 160 0.0000108 0.0100108 2 1.08e-05 1.08e-05 2.16e-05 2.3328e-10
+92	75355 26 342 342 0.0200108 0.0200108 1 1.08e-05 1.08e-05 1.08e-05 1.1664e-10
+92	209342 2654 491 16396 0.0300108 0.9900108 97 1.08e-05 1.08e-05 0.0010476 1.131408e-08
+vector 93 S2C.u1.DSTT.phyLayer.inboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+93	37379 43 26 160 0.0000108 0.0100108 2 1080 1080 2160 2332800
+93	75381 22 342 342 0.0200108 0.0200108 1 1080 1080 1080 1166400
+93	211996 2266 491 16396 0.0300108 0.9900108 97 1080 1080 104760 113140800
+vector 94 S2C.u1.DSTT.phyLayer.inboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+94	37422 43 26 160 0.0000108 0.0100108 2 1080 1080 2160 2332800
+94	75403 22 342 342 0.0200108 0.0200108 1 1080 1080 1080 1166400
+94	214262 2266 491 16396 0.0300108 0.9900108 97 1080 1080 104760 113140800
+vector 95 S2C.u1.DSTT.phyLayer.phyHeaderChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+95	37465 43 26 160 0.0000108 0.0100108 2 1080 1080 2160 2332800
+95	75425 22 342 342 0.0200108 0.0200108 1 1080 1080 1080 1166400
+95	216528 2266 491 16396 0.0300108 0.9900108 97 1080 1080 104760 113140800
+vector 96 S2C.u1.DSTT.phyLayer.phyHeaderChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+96	37508 43 26 160 0.0000108 0.0100108 2 1016 1016 2032 2064512
+96	75447 22 342 342 0.0200108 0.0200108 1 1016 1016 1016 1032256
+96	218794 2266 491 16396 0.0300108 0.9900108 97 1016 1016 98552 100128832
+vector 97 S2C.u1.DSTT.macLayer.inboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+97	37551 43 26 160 0.0000108 0.0100108 2 1016 1016 2032 2064512
+97	75469 22 342 342 0.0200108 0.0200108 1 1016 1016 1016 1032256
+97	221060 2266 491 16396 0.0300108 0.9900108 97 1016 1016 98552 100128832
+vector 98 S2C.u1.DSTT.macLayer.inboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+98	37594 43 26 160 0.0000108 0.0100108 2 1016 1016 2032 2064512
+98	75491 22 342 342 0.0200108 0.0200108 1 1016 1016 1016 1032256
+98	223326 2266 491 16396 0.0300108 0.9900108 97 1016 1016 98552 100128832
+vector 99 S2C.u1.DSTT.macLayer.fcsChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+99	37637 43 26 160 0.0000108 0.0100108 2 1016 1016 2032 2064512
+99	75513 22 342 342 0.0200108 0.0200108 1 1016 1016 1016 1032256
+99	225592 2266 491 16396 0.0300108 0.9900108 97 1016 1016 98552 100128832
+vector 100 S2C.u1.DSTT.macLayer.fcsChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+100	37680 45 26 160 0.0000108 0.0100108 2 1016 1016 2032 2064512
+100	75535 23 342 342 0.0200108 0.0200108 1 1016 1016 1016 1032256
+100	227858 2363 491 16396 0.0300108 0.9900108 97 1016 1016 98552 100128832
+vector 101 S2C.Client1.eth[0].phyLayer.transmitter transmissionTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetDuration(transmissionEnded)
+attr title "transmission time"
+attr unit s
+101	37725 53 27 161 0.0000108 0.0100108 2 1.08e-05 1.08e-05 2.16e-05 2.3328e-10
+101	75558 27 343 343 0.0200108 0.0200108 1 1.08e-05 1.08e-05 1.08e-05 1.1664e-10
+101	230221 2752 492 16397 0.0300108 0.9900108 97 1.08e-05 1.08e-05 0.0010476 1.131408e-08
+vector 102 S2C.u1.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSent
+attr title "packets sent, packetBytes"
+102	37778 43 30 164 0.0000108 0.0100108 2 143 143 286 40898
+102	75585 22 346 346 0.0200108 0.0200108 1 143 143 143 20449
+102	232973 2267 495 16400 0.0300108 0.9900108 97 143 143 13871 1983553
+vector 103 S2C.u1.cellularNic.pdcpRrc receivedPacketFromUpperLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source receivedPacketFromUpperLayer
+103	37821 43 35 169 0.0000108 0.0100108 2 163 163 326 53138
+103	75607 22 351 351 0.0200108 0.0200108 1 163 163 163 26569
+103	235240 2267 500 16405 0.0300108 0.9900108 97 163 163 15811 2577193
+vector 104 S2C.u1.cellularNic.pdcpRrc sentPacketToLowerLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source sentPacketToLowerLayer
+104	37864 43 35 169 0.0000108 0.0100108 2 164 164 328 53792
+104	75629 22 351 351 0.0200108 0.0200108 1 164 164 164 26896
+104	237507 2267 500 16405 0.0300108 0.9900108 97 164 164 15908 2608912
+vector 105 S2C.u1.cellularNic.nrRlc.um receivedPacketFromUpperLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source receivedPacketFromUpperLayer
+105	37907 43 36 170 0.0000108 0.0100108 2 164 164 328 53792
+105	75651 22 352 352 0.0200108 0.0200108 1 164 164 164 26896
+105	239774 2267 501 16406 0.0300108 0.9900108 97 164 164 15908 2608912
+vector 106 S2C.u1.cellularNic.nrMac receivedPacketFromUpperLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source receivedPacketFromUpperLayer
+106	37950 78 38 181 0.0000108 0.011 4 143 166 618 96010
+106	74353 17 276 276 0.016 0.016 1 48 48 48 2304
+106	75673 22 354 354 0.0200108 0.0200108 1 166 166 166 27556
+106	242041 5065 427 16511 0.025 0.996 244 48 166 32468 4789830
+vector 107 S2C.gnb.cellularNic.mac avgServedBlocksUl:vector ETV
+attr recordingmode vector
+attr source avgServedBlocksUl
+attr title "Avg Served Blocks Ul"
+attr unit blocks
+107	38028 186 45 191 0.001 0.012 12 0 1 2 2
+107	42618 48 204 230 0.013 0.015 3 0 1 1 1
+107	74370 16 270 270 0.016 0.016 1 0 0 0 0
+107	75695 63 284 318 0.017 0.02 4 0 0 0 0
+107	247106 16894 378 16545 0.021 0.999 979 0 1 147 147
+vector 108 S2C.gnb.cellularNic.mac avgServedBlocksDl:vector ETV
+attr recordingmode vector
+attr source avgServedBlocksDl
+attr title "Avg Served Blocks Dl"
+attr unit blocks
+108	38214 186 45 191 0.001 0.012 12 0 0 0 0
+108	42666 48 204 230 0.013 0.015 3 0 0 0 0
+108	74386 16 270 270 0.016 0.016 1 0 0 0 0
+108	75758 63 284 318 0.017 0.02 4 0 0 0 0
+108	264000 16894 378 16545 0.021 0.999 979 0 0 0 0
+vector 109 S2C.u1.cellularNic.nrMac sentPacketToLowerLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source sentPacketToLowerLayer
+109	38400 66 47 193 0.001 0.012 4 1 145 292 42052
+109	75821 17 280 280 0.016 0.016 1 50 50 50 2500
+109	280894 4499 380 16515 0.021 0.996 245 1 145 16758 2183048
+vector 110 S2C.u1.cellularNic.channelModel[0] measuredSinrUl:vector ETV
+attr recordingmode vector
+attr source measuredSinrUl
+attr title "SINR measured at feedback computation, UL"
+attr unit dB
+110	38466 59 58 126 0.002 0.008 2 23.387483725099 23.387483725099 46.774967450198 1093.9487899835
+110	42714 30 220 220 0.014 0.014 1 23.387483725099 23.387483725099 23.387483725099 546.97439499177
+110	75838 29 334 334 0.02 0.02 1 23.387483725099 23.387483725099 23.387483725099 546.97439499177
+110	285393 5079 439 16537 0.026 0.998 163 23.387483725099 23.387483725099 3812.1598471911 89156.826383659
+vector 111 S2C.u1.cellularNic.channelModel[0] measuredSinrDl:vector ETV
+attr recordingmode vector
+attr source measuredSinrDl
+attr title "SINR measured at feedback computation, DL"
+attr unit dB
+111	38525 59 58 126 0.002 0.008 2 35.192381063507 35.192381063507 70.384762127014 2477.0073698382
+111	42744 30 220 220 0.014 0.014 1 35.192381063507 35.192381063507 35.192381063507 1238.5036849191
+111	75867 29 334 334 0.02 0.02 1 35.192381063507 35.192381063507 35.192381063507 1238.5036849191
+111	290472 5079 439 16537 0.026 0.998 163 35.192381063507 35.192381063507 5736.3581133517 201876.10064181
+vector 112 S2C.gnb.cellularNic.mac receivedPacketFromLowerLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source receivedPacketFromLowerLayer
+112	38584 175 59 199 0.002 0.012 11 1 145 299 42059
+112	42774 80 211 227 0.013 0.014 5 1 1 5 5
+112	75896 77 291 341 0.017 0.02 5 1 50 54 2504
+112	295551 15688 394 16544 0.022 0.998 897 1 145 17410 2183700
+vector 113 S2C.u1.cellularNic.nrChannelModel[0] measuredSinrUl:vector ETV
+attr recordingmode vector
+attr source measuredSinrUl
+attr title "SINR measured at feedback computation, UL"
+attr unit dB
+113	38759 57 60 128 0.002 0.008 2 45.58155060937 45.58155060937 91.16310121874 4155.3555119091
+113	42854 29 222 222 0.014 0.014 1 45.58155060937 45.58155060937 45.58155060937 2077.6777559546
+113	75973 28 336 336 0.02 0.02 1 45.58155060937 45.58155060937 45.58155060937 2077.6777559546
+113	311239 4916 441 16539 0.026 0.998 163 45.58155060937 45.58155060937 7429.7927493273 338661.47422059
+vector 114 S2C.u1.cellularNic.nrChannelModel[0] measuredSinrDl:vector ETV
+attr recordingmode vector
+attr source measuredSinrDl
+attr title "SINR measured at feedback computation, DL"
+attr unit dB
+114	38816 59 60 128 0.002 0.008 2 43.254887350218 43.254887350218 86.509774700436 3741.9705593601
+114	42883 30 222 222 0.014 0.014 1 43.254887350218 43.254887350218 43.254887350218 1870.98527968
+114	76001 29 336 336 0.02 0.02 1 43.254887350218 43.254887350218 43.254887350218 1870.98527968
+114	316155 5079 441 16539 0.026 0.998 163 43.254887350218 43.254887350218 7050.5466380855 304970.60058785
+vector 115 S2C.u2.cellularNic.channelModel[0] measuredSinrUl:vector ETV
+attr recordingmode vector
+attr source measuredSinrUl
+attr title "SINR measured at feedback computation, UL"
+attr unit dB
+115	38875 59 62 130 0.002 0.008 2 18.922269754233 18.922269754233 37.844539508466 716.10458530392
+115	42913 30 224 224 0.014 0.014 1 18.922269754233 18.922269754233 18.922269754233 358.05229265196
+115	76030 29 338 338 0.02 0.02 1 18.922269754233 18.922269754233 18.922269754233 358.05229265196
+115	321234 5079 443 16541 0.026 0.998 163 18.922269754233 18.922269754233 3084.32996994 58362.52370227
+vector 116 S2C.u2.cellularNic.channelModel[0] measuredSinrDl:vector ETV
+attr recordingmode vector
+attr source measuredSinrDl
+attr title "SINR measured at feedback computation, DL"
+attr unit dB
+116	38934 59 62 130 0.002 0.008 2 50.030647477442 50.030647477442 100.06129495488 5006.1313740241
+116	42943 30 224 224 0.014 0.014 1 50.030647477442 50.030647477442 50.030647477442 2503.0656870121
+116	76059 29 338 338 0.02 0.02 1 50.030647477442 50.030647477442 50.030647477442 2503.0656870121
+116	326313 5079 443 16541 0.026 0.998 163 50.030647477442 50.030647477442 8154.995538823 407999.70698297
+vector 117 S2C.u2.cellularNic.nrChannelModel[0] measuredSinrUl:vector ETV
+attr recordingmode vector
+attr source measuredSinrUl
+attr title "SINR measured at feedback computation, UL"
+attr unit dB
+117	38993 59 64 132 0.002 0.008 2 32.874679866925 32.874679866925 65.74935973385 2161.4891527056
+117	42973 30 226 226 0.014 0.014 1 32.874679866925 32.874679866925 32.874679866925 1080.7445763528
+117	76088 29 340 340 0.02 0.02 1 32.874679866925 32.874679866925 32.874679866925 1080.7445763528
+117	331392 5079 445 16543 0.026 0.998 163 32.874679866925 32.874679866925 5358.5728183088 176161.36594551
+vector 118 S2C.u2.cellularNic.nrChannelModel[0] measuredSinrDl:vector ETV
+attr recordingmode vector
+attr source measuredSinrDl
+attr title "SINR measured at feedback computation, DL"
+attr unit dB
+118	39052 59 64 132 0.002 0.008 2 42.322981551384 42.322981551384 84.645963102768 3582.4695347976
+118	43003 30 226 226 0.014 0.014 1 42.322981551384 42.322981551384 42.322981551384 1791.2347673988
+118	76117 29 340 340 0.02 0.02 1 42.322981551384 42.322981551384 42.322981551384 1791.2347673988
+118	336471 5079 445 16543 0.026 0.998 163 42.322981551384 42.322981551384 6898.6459928756 291971.267086
+vector 119 S2C.gnb.cellularNic.mac sentPacketToLowerLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source sentPacketToLowerLayer
+119	39111 62 67 134 0.002 0.009 4 1 1 4 4
+119	43033 48 211 230 0.013 0.015 3 1 1 3 3
+119	76146 15 318 318 0.02 0.02 1 1 1 1 1
+119	341550 6733 394 16462 0.022 0.995 391 1 1 391 391
+vector 120 S2C.u1.cellularNic.nrMac receivedPacketFromLowerLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source receivedPacketFromLowerLayer
+120	39173 60 77 159 0.003 0.01 4 1 1 4 4
+120	43081 32 229 247 0.014 0.015 2 1 1 2 2
+120	76161 16 283 283 0.016 0.016 1 1 1 1 1
+120	348283 6709 386 16518 0.021 0.996 392 1 1 392 392
+vector 121 S2C.u1.cellularNic.nrMac sentPacketToUpperLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source sentPacketToUpperLayer
+121	39233 31 88 177 0.005 0.011 2 1 1 2 2
+121	74402 16 272 272 0.016 0.016 1 1 1 1 1
+121	354992 2553 423 16507 0.025 0.996 147 1 1 147 147
+vector 122 S2C.u1.cellularNic.nrRlc.um rlcPacketLossUl:vector ETV
+attr recordingmode vector
+attr source rlcPacketLossUl
+attr title "rlc Packet Loss"
+attr unit ""
+122	39264 31 90 179 0.005 0.011 2 0 0 0 0
+122	43113 16 233 233 0.015 0.015 1 0 0 0 0
+122	74418 16 274 274 0.016 0.016 1 0 0 0 0
+122	76177 15 321 321 0.02 0.02 1 0 0 0 0
+122	357545 4180 425 16509 0.025 0.996 244 0 0 0 0
+vector 123 S2C.u1.cellularNic.nrRlc.um sentPacketToLowerLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source sentPacketToLowerLayer
+123	39295 35 90 179 0.005 0.011 2 143 143 286 40898
+123	74434 17 274 274 0.016 0.016 1 48 48 48 2304
+123	361725 2798 425 16509 0.025 0.996 147 48 143 16366 2116898
+vector 124 S2C.u1.cellularNic.nrPhy averageCqiUl:vector ETV
+attr recordingmode vector
+attr source averageCqiUl
+attr title "Average Cqi reported in UL"
+attr unit cqi
+124	39330 33 97 186 0.005 0.011 2 15 15 30 450
+124	76192 17 281 281 0.016 0.016 1 15 15 15 225
+124	364523 2700 432 16516 0.025 0.996 147 15 15 2205 33075
+vector 125 S2C.u1.cellularNic.nrChannelModel[0] rcvdSinrUl:vector ETV
+attr recordingmode vector
+attr source rcvdSinrUl
+attr title "SINR measured at packet reception, UL"
+attr unit dB
+125	39363 60 108 198 0.006 0.012 2 49.722051217118 49.722051217118 99.444102434236 4944.5647544754
+125	76209 30 290 290 0.017 0.017 1 49.722051217118 49.722051217118 49.722051217118 2472.2823772377
+125	367223 4611 447 16529 0.026 0.997 147 49.722051217118 49.722051217118 7309.1415289163 363425.50945394
+vector 126 S2C.u1.cellularNic.nrMac macDelayUl:vector ETV
+attr recordingmode vector
+attr source macDelayUl
+attr title "Delay at the MAC layer UL"
+attr unit s
+126	39423 20 134 134 0.009 0.009 1 0.004 0.004 0.004 1.6e-05
+126	43129 20 230 230 0.015 0.015 1 0.004 0.004 0.004 1.6e-05
+126	76239 19 318 318 0.02 0.02 1 0.004 0.004 0.004 1.6e-05
+126	371834 3062 461 16462 0.029 0.995 146 0.004 0.004 0.584 0.002336
+vector 127 S2C.gnb.cellularNic.mac sentPacketToUpperLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source sentPacketToUpperLayer
+127	39443 18 134 134 0.009 0.009 1 143 143 143 20449
+127	43149 18 230 230 0.015 0.015 1 143 143 143 20449
+127	76258 16 318 318 0.02 0.02 1 48 48 48 2304
+127	374896 2722 461 16462 0.029 0.995 146 48 143 16318 2114594
+vector 128 S2C.gnb.cellularNic.rlc.um receivedPacketFromLowerLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source receivedPacketFromLowerLayer
+128	39461 18 138 138 0.009 0.009 1 143 143 143 20449
+128	43167 18 233 233 0.015 0.015 1 143 143 143 20449
+128	76274 16 321 321 0.02 0.02 1 48 48 48 2304
+128	377618 2722 465 16465 0.029 0.995 146 48 143 16318 2114594
+vector 129 S2C.u1.cellularNic.nrRlc.um rlcPduThroughputUl:vector ETV
+attr recordingmode vector
+attr source rlcPduThroughputUl
+attr title "Throughput at the rlc layer UL"
+attr unit Bps
+129	39479 16 138 138 0.009 0.009 1 0 0 0 0
+129	43185 16 233 233 0.015 0.015 1 0 0 0 0
+129	76290 15 321 321 0.02 0.02 1 0 0 0 0
+129	380340 2478 465 16465 0.029 0.995 146 0 0 0 0
+vector 130 S2C.u1.cellularNic.nrRlc.um rlcPduDelayUl:vector ETV
+attr recordingmode vector
+attr source rlcPduDelayUl
+attr title "Delay at the rlc layer UL"
+attr unit s
+130	39495 20 138 138 0.009 0.009 1 0.004 0.004 0.004 1.6e-05
+130	43201 20 233 233 0.015 0.015 1 0.004 0.004 0.004 1.6e-05
+130	76305 19 321 321 0.02 0.02 1 0.004 0.004 0.004 1.6e-05
+130	382818 3062 465 16465 0.029 0.995 146 0.004 0.004 0.584 0.002336
+vector 131 S2C.u1.cellularNic.nrRlc.um rlcPduPacketLossUl:vector ETV
+attr recordingmode vector
+attr source rlcPduPacketLossUl
+attr title "rlc Packet Loss"
+attr unit ""
+131	39515 16 138 138 0.009 0.009 1 0 0 0 0
+131	43221 16 233 233 0.015 0.015 1 0 0 0 0
+131	76324 15 321 321 0.02 0.02 1 0 0 0 0
+131	385880 2478 465 16465 0.029 0.995 146 0 0 0 0
+vector 132 S2C.u1.cellularNic.nrMac harqErrorRate_1st_Ul:vector ETV
+attr recordingmode vector
+attr source harqErrorRate_1st_Ul
+attr title "Harq Error Rate Ul (1st tx)"
+attr unit ""
+132	39531 15 157 157 0.01 0.01 1 0 0 0 0
+132	76339 16 283 283 0.016 0.016 1 0 0 0 0
+132	388358 2503 386 16518 0.021 0.996 147 0 0 0 0
+vector 133 S2C.u1.cellularNic.nrMac harqErrorRateUl:vector ETV
+attr recordingmode vector
+attr source harqErrorRateUl
+attr title "Harq Error Rate Ul"
+attr unit ""
+133	39546 15 157 157 0.01 0.01 1 0 0 0 0
+133	76355 16 283 283 0.016 0.016 1 0 0 0 0
+133	390861 2503 386 16518 0.021 0.996 147 0 0 0 0
+vector 134 S2C.u1.cellularNic.nrMac harqTxAttemptsUl:vector ETV
+attr recordingmode vector
+attr source harqTxAttemptsUl
+attr title "Harq Tx Attempts Ul"
+attr unit ""
+134	39561 3042 157 157 0.01 0.01 1 1 1 1 1
+134	76371 16 283 283 0.016 0.016 1 1 1 1 1
+134	393364 2503 386 16518 0.021 0.996 147 1 1 147 147
+vector 135 S2C.u1.cellularNic.nrRlc.um rlcThroughputUl:vector ETV
+attr recordingmode vector
+attr source rlcThroughputUl
+attr title "Throughput at the rlc layer UL"
+attr unit Bps
+135	43237 30 233 233 0.015 0.015 1 10933.333333333 10933.333333333 10933.333333333 119537777.77777
+135	76387 19 321 321 0.02 0.02 1 16400 16400 16400 268960000
+135	395867 2502 560 16465 0.035 0.995 97 14057.142857143 16400 1575754.8261667 25608148334.376
+vector 136 S2C.u1.cellularNic.nrRlc.um rlcPacketLossTotal:vector ETV
+attr recordingmode vector
+attr source rlcPacketLossTotal
+attr title "rlc Packet Loss"
+attr unit ""
+136	43267 16 233 233 0.015 0.015 1 0 0 0 0
+136	76406 15 321 321 0.02 0.02 1 0 0 0 0
+136	398369 1627 560 16465 0.035 0.995 97 0 0 0 0
+vector 137 S2C.u1.cellularNic.nrRlc.um rlcDelayUl:vector ETV
+attr recordingmode vector
+attr source rlcDelayUl
+attr title "Delay at the rlc layer UL"
+attr unit s
+137	43283 24 233 233 0.015 0.015 1 0.0149892 0.0149892 0.0149892 0.00022467611664
+137	76421 23 321 321 0.02 0.02 1 0.0099892 0.0099892 0.0099892 9.978411664e-05
+137	399996 2403 560 16465 0.035 0.995 97 0.0099892 0.0149892 1.2139524 0.01579876731408
+vector 138 S2C.gnb.cellularNic.rlc.um sentPacketToUpperLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source sentPacketToUpperLayer
+138	43307 18 233 233 0.015 0.015 1 164 164 164 26896
+138	76444 17 321 321 0.02 0.02 1 164 164 164 26896
+138	402399 1821 560 16465 0.035 0.995 97 164 164 15908 2608912
+vector 139 S2C.gnb.cellularNic.pdcpRrc receivedPacketFromLowerLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source receivedPacketFromLowerLayer
+139	43325 18 234 234 0.015 0.015 1 164 164 164 26896
+139	76461 17 322 322 0.02 0.02 1 164 164 164 26896
+139	404220 1821 561 16466 0.035 0.995 97 164 164 15908 2608912
+vector 140 S2C.gnb.cellularNic.pdcpRrc sentPacketToUpperLayer:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source sentPacketToUpperLayer
+140	43343 18 234 234 0.015 0.015 1 163 163 163 26569
+140	76478 17 322 322 0.02 0.02 1 163 163 163 26569
+140	406041 1821 561 16466 0.035 0.995 97 163 163 15811 2577193
+vector 141 S2C.gnb.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSent
+attr title "packets sent, packetBytes"
+141	43361 18 238 238 0.015 0.015 1 179 179 179 32041
+141	76495 17 326 326 0.02 0.02 1 179 179 179 32041
+141	407862 1821 565 16470 0.035 0.995 97 179 179 17363 3107977
+vector 142 S2C.gnb.pppIf.queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+142	43379 19 240 240 0.015 0.015 1 1592 1592 1592 2534464
+142	76512 18 328 328 0.02 0.02 1 1592 1592 1592 2534464
+142	409683 1918 567 16472 0.035 0.995 97 1592 1592 154424 245843008
+vector 143 S2C.gnb.pppIf.queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+143	43398 16 240 240 0.015 0.015 1 0 0 0 0
+143	76530 15 328 328 0.02 0.02 1 0 0 0 0
+143	411601 1627 567 16472 0.035 0.995 97 0 0 0 0
+vector 144 S2C.gnb.pppIf.queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+144	43414 19 240 240 0.015 0.015 1 1592 1592 1592 2534464
+144	76545 18 328 328 0.02 0.02 1 1592 1592 1592 2534464
+144	413228 1918 567 16472 0.035 0.995 97 1592 1592 154424 245843008
+vector 145 S2C.gnb.pppIf.ppp rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, packetBytes"
+145	43433 18 240 240 0.015 0.015 1 199 199 199 39601
+145	76563 17 328 328 0.02 0.02 1 199 199 199 39601
+145	415146 1821 567 16472 0.035 0.995 97 199 199 19303 3841297
+vector 146 S2C.gnb.pppIf.ppp txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToLower
+attr title "packets transmitted, packetBytes"
+146	43451 18 240 240 0.015 0.015 1 206 206 206 42436
+146	76580 17 328 328 0.02 0.02 1 206 206 206 42436
+146	416967 1821 567 16472 0.035 0.995 97 206 206 19982 4116292
+vector 147 S2C.gnb.pppIf.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+147	43469 16 240 240 0.015 0.015 1 0 0 0 0
+147	76597 15 328 328 0.02 0.02 1 0 0 0 0
+147	418788 1627 567 16472 0.035 0.995 97 0 0 0 0
+vector 148 S2C.gnb.pppIf.queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+148	43485 27241 240 240 0.015 0.015 1 0 0 0 0
+148	76612 15 328 328 0.02 0.02 1 0 0 0 0
+148	420415 1627 567 16472 0.035 0.995 97 0 0 0 0
+vector 149 S2C.upf.ppp[0].ppp rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source rxPkOk
+attr title "packets received OK, packetBytes"
+149	71062 23 249 249 0.01501653 0.01501653 1 206 206 206 42436
+149	76627 23 358 358 0.02001653 0.02001653 1 206 206 206 42436
+149	422042 2364 576 16481 0.03501653 0.99501653 97 206 206 19982 4116292
+vector 150 S2C.upf.ppp[0].ppp passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetSentToUpper
+attr title "packets passed to higher layer, packetBytes"
+150	71085 23 249 249 0.01501653 0.01501653 1 199 199 199 39601
+150	76650 23 358 358 0.02001653 0.02001653 1 199 199 199 39601
+150	424406 2364 576 16481 0.03501653 0.99501653 97 199 199 19303 3841297
+vector 151 S2C.upf.udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceived
+attr title "packets received, packetBytes"
+151	71108 23 251 251 0.01501653 0.01501653 1 179 179 179 32041
+151	76673 23 360 360 0.02001653 0.02001653 1 179 179 179 32041
+151	426770 2364 578 16483 0.03501653 0.99501653 97 179 179 17363 3107977
+vector 152 S2C.upf.NWTT.macLayer.queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+152	71131 24 254 254 0.01501653 0.01501653 1 1016 1016 1016 1032256
+152	76696 24 363 363 0.02001653 0.02001653 1 1016 1016 1016 1032256
+152	429134 2461 581 16486 0.03501653 0.99501653 97 1016 1016 98552 100128832
+vector 153 S2C.upf.NWTT.macLayer.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+153	71155 42 254 255 0.01501653 0.01501653 2 0 1 1 1
+153	76720 42 363 364 0.02001653 0.02001653 2 0 1 1 1
+153	431595 4340 581 16487 0.03501653 0.99501653 194 0 1 97 97
+vector 154 S2C.upf.NWTT.macLayer.queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+154	71197 45 254 255 0.01501653 0.01501653 2 0 1016 1016 1032256
+154	76762 45 363 364 0.02001653 0.02001653 2 0 1016 1016 1032256
+154	435935 4631 581 16487 0.03501653 0.99501653 194 0 1016 98552 100128832
+vector 155 S2C.upf.NWTT.macLayer.queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+155	71242 21 255 255 0.01501653 0.01501653 1 0 0 0 0
+155	76807 21 364 364 0.02001653 0.02001653 1 0 0 0 0
+155	440566 2170 582 16487 0.03501653 0.99501653 97 0 0 0 0
+vector 156 S2C.upf.NWTT.macLayer.queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+156	71263 24 255 255 0.01501653 0.01501653 1 1016 1016 1016 1032256
+156	76828 24 364 364 0.02001653 0.02001653 1 1016 1016 1016 1032256
+156	442736 2461 582 16487 0.03501653 0.99501653 97 1016 1016 98552 100128832
+vector 157 S2C.upf.NWTT.macLayer.server incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "incoming packet lengths"
+attr unit b
+157	71287 24 255 255 0.01501653 0.01501653 1 1016 1016 1016 1032256
+157	76852 24 364 364 0.02001653 0.02001653 1 1016 1016 1016 1032256
+157	445197 2461 582 16487 0.03501653 0.99501653 97 1016 1016 98552 100128832
+vector 158 S2C.upf.NWTT.macLayer.server outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushed)
+attr title "outgoing packet lengths"
+attr unit b
+158	71311 24 255 255 0.01501653 0.01501653 1 1016 1016 1016 1032256
+158	76876 24 364 364 0.02001653 0.02001653 1 1016 1016 1016 1032256
+158	447658 2461 582 16487 0.03501653 0.99501653 97 1016 1016 98552 100128832
+vector 159 S2C.upf.NWTT.macLayer.outboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+159	71335 24 255 255 0.01501653 0.01501653 1 1016 1016 1016 1032256
+159	76900 24 364 364 0.02001653 0.02001653 1 1016 1016 1016 1032256
+159	450119 2461 582 16487 0.03501653 0.99501653 97 1016 1016 98552 100128832
+vector 160 S2C.upf.NWTT.macLayer.outboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+160	71359 24 255 255 0.01501653 0.01501653 1 1016 1016 1016 1032256
+160	76924 24 364 364 0.02001653 0.02001653 1 1016 1016 1016 1032256
+160	452580 2461 582 16487 0.03501653 0.99501653 97 1016 1016 98552 100128832
+vector 161 S2C.upf.NWTT.phyLayer.phyHeaderInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+161	71383 24 255 255 0.01501653 0.01501653 1 1016 1016 1016 1032256
+161	76948 24 364 364 0.02001653 0.02001653 1 1016 1016 1016 1032256
+161	455041 2461 582 16487 0.03501653 0.99501653 97 1016 1016 98552 100128832
+vector 162 S2C.upf.NWTT.phyLayer.phyHeaderInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+162	71407 24 255 255 0.01501653 0.01501653 1 1080 1080 1080 1166400
+162	76972 24 364 364 0.02001653 0.02001653 1 1080 1080 1080 1166400
+162	457502 2461 582 16487 0.03501653 0.99501653 97 1080 1080 104760 113140800
+vector 163 S2C.upf.NWTT.phyLayer.outboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+163	71431 24 255 255 0.01501653 0.01501653 1 1080 1080 1080 1166400
+163	76996 24 364 364 0.02001653 0.02001653 1 1080 1080 1080 1166400
+163	459963 2461 582 16487 0.03501653 0.99501653 97 1080 1080 104760 113140800
+vector 164 S2C.upf.NWTT.phyLayer.outboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+164	71455 24 255 255 0.01501653 0.01501653 1 1080 1080 1080 1166400
+164	77020 24 364 364 0.02001653 0.02001653 1 1080 1080 1080 1166400
+164	462424 2461 582 16487 0.03501653 0.99501653 97 1080 1080 104760 113140800
+vector 165 S2C.upf.NWTT.phyLayer.transmitter transmissionTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetDuration(transmissionEnded)
+attr title "transmission time"
+attr unit s
+165	71479 29 256 256 0.01503101 0.01503101 1 1.448e-05 1.448e-05 1.448e-05 2.096704e-10
+165	77044 29 365 365 0.02003101 0.02003101 1 1.448e-05 1.448e-05 1.448e-05 2.096704e-10
+165	464885 2946 583 16488 0.03503101 0.99503101 97 1.448e-05 1.448e-05 0.00140456 2.03380288e-08
+vector 166 S2C.tsnSwitch.eth[0].phyLayer.receiver receptionTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetDuration(receptionEnded)
+attr title "reception time"
+attr unit s
+166	71508 29 257 257 0.01503106 0.01503106 1 1.448e-05 1.448e-05 1.448e-05 2.096704e-10
+166	77073 29 366 366 0.02003106 0.02003106 1 1.448e-05 1.448e-05 1.448e-05 2.096704e-10
+166	467831 2946 584 16489 0.03503106 0.99503106 97 1.448e-05 1.448e-05 0.00140456 2.03380288e-08
+vector 167 S2C.tsnSwitch.eth[0].phyLayer.inboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+167	71537 24 257 257 0.01503106 0.01503106 1 1080 1080 1080 1166400
+167	77102 24 366 366 0.02003106 0.02003106 1 1080 1080 1080 1166400
+167	470777 2461 584 16489 0.03503106 0.99503106 97 1080 1080 104760 113140800
+vector 168 S2C.tsnSwitch.eth[0].phyLayer.inboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+168	71561 24 257 257 0.01503106 0.01503106 1 1080 1080 1080 1166400
+168	77126 24 366 366 0.02003106 0.02003106 1 1080 1080 1080 1166400
+168	473238 2461 584 16489 0.03503106 0.99503106 97 1080 1080 104760 113140800
+vector 169 S2C.tsnSwitch.eth[0].phyLayer.phyHeaderChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+169	71585 24 257 257 0.01503106 0.01503106 1 1080 1080 1080 1166400
+169	77150 24 366 366 0.02003106 0.02003106 1 1080 1080 1080 1166400
+169	475699 2461 584 16489 0.03503106 0.99503106 97 1080 1080 104760 113140800
+vector 170 S2C.tsnSwitch.eth[0].phyLayer.phyHeaderChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+170	71609 24 257 257 0.01503106 0.01503106 1 1016 1016 1016 1032256
+170	77174 24 366 366 0.02003106 0.02003106 1 1016 1016 1016 1032256
+170	478160 2461 584 16489 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 171 S2C.tsnSwitch.eth[0].macLayer.inboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+171	71633 24 257 257 0.01503106 0.01503106 1 1016 1016 1016 1032256
+171	77198 24 366 366 0.02003106 0.02003106 1 1016 1016 1016 1032256
+171	480621 2461 584 16489 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 172 S2C.tsnSwitch.eth[0].macLayer.inboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+172	71657 24 257 257 0.01503106 0.01503106 1 1016 1016 1016 1032256
+172	77222 24 366 366 0.02003106 0.02003106 1 1016 1016 1016 1032256
+172	483082 2461 584 16489 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 173 S2C.tsnSwitch.eth[0].macLayer.fcsChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+173	71681 24 257 257 0.01503106 0.01503106 1 1016 1016 1016 1032256
+173	77246 24 366 366 0.02003106 0.02003106 1 1016 1016 1016 1032256
+173	485543 2461 584 16489 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 174 S2C.tsnSwitch.eth[0].macLayer.fcsChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+174	71705 24 257 257 0.01503106 0.01503106 1 1016 1016 1016 1032256
+174	77270 24 366 366 0.02003106 0.02003106 1 1016 1016 1016 1032256
+174	488004 2461 584 16489 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 175 S2C.tsnSwitch.ethernet.fcsChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+175	71729 24 257 257 0.01503106 0.01503106 1 1016 1016 1016 1032256
+175	77294 24 366 366 0.02003106 0.02003106 1 1016 1016 1016 1032256
+175	490465 2461 584 16489 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 176 S2C.tsnSwitch.ethernet.fcsChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+176	71753 23 257 257 0.01503106 0.01503106 1 984 984 984 968256
+176	77318 23 366 366 0.02003106 0.02003106 1 984 984 984 968256
+176	492926 2364 584 16489 0.03503106 0.99503106 97 984 984 95448 93920832
+vector 177 S2C.tsnSwitch.ethernet.macHeaderChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+177	71776 23 257 257 0.01503106 0.01503106 1 984 984 984 968256
+177	77341 23 366 366 0.02003106 0.02003106 1 984 984 984 968256
+177	495290 2364 584 16489 0.03503106 0.99503106 97 984 984 95448 93920832
+vector 178 S2C.tsnSwitch.ethernet.macHeaderChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+178	71799 23 257 257 0.01503106 0.01503106 1 872 872 872 760384
+178	77364 23 366 366 0.02003106 0.02003106 1 872 872 872 760384
+178	497654 2364 584 16489 0.03503106 0.99503106 97 872 872 84584 73757248
+vector 179 S2C.tsnSwitch.ieee8021q.qTagHeaderChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+179	71822 23 257 257 0.01503106 0.01503106 1 872 872 872 760384
+179	77387 23 366 366 0.02003106 0.02003106 1 872 872 872 760384
+179	500018 2364 584 16489 0.03503106 0.99503106 97 872 872 84584 73757248
+vector 180 S2C.tsnSwitch.ieee8021q.qTagHeaderChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+180	71845 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+180	77410 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+180	502382 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 181 S2C.tsnSwitch.bridging.interfaceRelay.learner incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+181	71868 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+181	77433 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+181	504746 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 182 S2C.tsnSwitch.bridging.interfaceRelay.learner outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+182	71891 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+182	77456 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+182	507110 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 183 S2C.tsnSwitch.bridging.streamCoder.decoder incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+183	71914 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+183	77479 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+183	509474 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 184 S2C.tsnSwitch.bridging.streamCoder.decoder outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+184	71937 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+184	77502 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+184	511838 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 185 S2C.tsnSwitch.bridging.streamFilter.ingress.classifier packetLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushed)
+attr title "packet lengths"
+attr unit b
+185	71960 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+185	77525 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+185	514202 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 186 S2C.tsnSwitch.bridging.streamFilter.ingress.gate[1] incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+186	71983 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+186	77548 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+186	516566 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 187 S2C.tsnSwitch.bridging.streamFilter.ingress.gate[1] outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+187	72006 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+187	77571 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+187	518930 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 188 S2C.tsnSwitch.bridging.streamFilter.ingress.meter[1] incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+188	72029 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+188	77594 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+188	521294 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 189 S2C.tsnSwitch.bridging.streamFilter.ingress.meter[1] outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+189	72052 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+189	77617 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+189	523658 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 190 S2C.tsnSwitch.bridging.streamFilter.ingress.filter[1] incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+190	72075 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+190	77640 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+190	526022 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 191 S2C.tsnSwitch.bridging.streamFilter.ingress.filter[1] outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+191	72098 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+191	77663 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+191	528386 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 192 S2C.tsnSwitch.bridging.streamFilter.ingress.barrier incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+192	72121 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+192	77686 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+192	530750 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 193 S2C.tsnSwitch.bridging.streamFilter.ingress.barrier outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+193	72144 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+193	77709 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+193	533114 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 194 S2C.tsnSwitch.bridging.directionReverser.reverser incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+194	72167 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+194	77732 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+194	535478 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 195 S2C.tsnSwitch.bridging.directionReverser.reverser outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+195	72190 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+195	77755 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+195	537842 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 196 S2C.tsnSwitch.bridging.streamIdentifier.identifier incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+196	72213 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+196	77778 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+196	540206 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 197 S2C.tsnSwitch.bridging.streamIdentifier.identifier outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+197	72236 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+197	77801 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+197	542570 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 198 S2C.tsnSwitch.bridging.streamCoder.encoder incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+198	72259 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+198	77824 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+198	544934 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 199 S2C.tsnSwitch.bridging.streamCoder.encoder outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+199	72282 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+199	77847 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+199	547298 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 200 S2C.tsnSwitch.ieee8021q.qTagHeaderInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+200	72305 23 257 257 0.01503106 0.01503106 1 840 840 840 705600
+200	77870 23 366 366 0.02003106 0.02003106 1 840 840 840 705600
+200	549662 2364 584 16489 0.03503106 0.99503106 97 840 840 81480 68443200
+vector 201 S2C.tsnSwitch.ieee8021q.qTagHeaderInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+201	72328 23 257 257 0.01503106 0.01503106 1 872 872 872 760384
+201	77893 23 366 366 0.02003106 0.02003106 1 872 872 872 760384
+201	552026 2364 584 16489 0.03503106 0.99503106 97 872 872 84584 73757248
+vector 202 S2C.tsnSwitch.ethernet.macHeaderInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+202	72351 23 257 257 0.01503106 0.01503106 1 872 872 872 760384
+202	77916 23 366 366 0.02003106 0.02003106 1 872 872 872 760384
+202	554390 2364 584 16489 0.03503106 0.99503106 97 872 872 84584 73757248
+vector 203 S2C.tsnSwitch.ethernet.macHeaderInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+203	72374 23 257 257 0.01503106 0.01503106 1 984 984 984 968256
+203	77939 23 366 366 0.02003106 0.02003106 1 984 984 984 968256
+203	556754 2364 584 16489 0.03503106 0.99503106 97 984 984 95448 93920832
+vector 204 S2C.tsnSwitch.ethernet.paddingInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+204	72397 23 257 257 0.01503106 0.01503106 1 984 984 984 968256
+204	77962 23 366 366 0.02003106 0.02003106 1 984 984 984 968256
+204	559118 2364 584 16489 0.03503106 0.99503106 97 984 984 95448 93920832
+vector 205 S2C.tsnSwitch.ethernet.paddingInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+205	72420 23 257 257 0.01503106 0.01503106 1 984 984 984 968256
+205	77985 23 366 366 0.02003106 0.02003106 1 984 984 984 968256
+205	561482 2364 584 16489 0.03503106 0.99503106 97 984 984 95448 93920832
+vector 206 S2C.tsnSwitch.ethernet.fcsInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+206	72443 23 257 257 0.01503106 0.01503106 1 984 984 984 968256
+206	78008 23 366 366 0.02003106 0.02003106 1 984 984 984 968256
+206	563846 2364 584 16489 0.03503106 0.99503106 97 984 984 95448 93920832
+vector 207 S2C.tsnSwitch.ethernet.fcsInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+207	72466 24 257 257 0.01503106 0.01503106 1 1016 1016 1016 1032256
+207	78031 24 366 366 0.02003106 0.02003106 1 1016 1016 1016 1032256
+207	566210 2461 584 16489 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 208 S2C.tsnSwitch.eth[1].macLayer.queue incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(localSignal(packetPushStarted))
+attr title "incoming packet lengths"
+attr unit b
+208	72490 24 257 257 0.01503106 0.01503106 1 1016 1016 1016 1032256
+208	78055 24 366 366 0.02003106 0.02003106 1 1016 1016 1016 1032256
+208	568671 2461 584 16489 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 209 S2C.tsnSwitch.eth[1].macLayer.queue.classifier packetLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushed)
+attr title "packet lengths"
+attr unit b
+209	72514 24 257 257 0.01503106 0.01503106 1 1016 1016 1016 1032256
+209	78079 24 366 366 0.02003106 0.02003106 1 1016 1016 1016 1032256
+209	571132 2461 584 16489 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 210 S2C.tsnSwitch.eth[1].macLayer.queue.queue[1] incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source packetLength(packetPushStarted)
+attr title "incoming packet lengths"
+attr unit b
+210	72538 24 257 257 0.01503106 0.01503106 1 1016 1016 1016 1032256
+210	78103 24 366 366 0.02003106 0.02003106 1 1016 1016 1016 1032256
+210	573593 2461 584 16489 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 211 S2C.tsnSwitch.eth[1].macLayer.queue.queue[1] queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + count(packetPushStarted) - count(packetPulled) - count(packetRemoved) - count(packetDropped)))"
+attr title "queue length"
+attr unit pk
+211	72562 42 257 258 0.01503106 0.01503106 2 0 1 1 1
+211	78127 42 366 367 0.02003106 0.02003106 2 0 1 1 1
+211	576054 4340 584 16490 0.03503106 0.99503106 194 0 1 97 97
+vector 212 S2C.tsnSwitch.eth[1].macLayer.queue.queue[1] queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source "warmup(atomic(constant0(packetPushEnded) + sum(packetLength(packetPushStarted)) - sum(packetLength(packetPulled)) - sum(packetLength(packetRemoved)) - sum(packetLength(packetDropped))))"
+attr title "queue bit length"
+attr unit b
+212	72604 45 257 258 0.01503106 0.01503106 2 0 1016 1016 1032256
+212	78169 45 366 367 0.02003106 0.02003106 2 0 1016 1016 1032256
+212	580394 4631 584 16490 0.03503106 0.99503106 194 0 1016 98552 100128832
+vector 213 S2C.tsnSwitch.eth[1].macLayer.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(localSignal(packetPushEnded)) + count(localSignal(packetPushStarted)) - count(localSignal(packetPulled)) - count(localSignal(packetRemoved)) - count(localSignal(packetDropped))))"
+attr title "queue length"
+attr unit pk
+213	72649 42 257 258 0.01503106 0.01503106 2 0 1 1 1
+213	78214 42 366 367 0.02003106 0.02003106 2 0 1 1 1
+213	585025 4340 584 16490 0.03503106 0.99503106 194 0 1 97 97
+vector 214 S2C.tsnSwitch.eth[1].macLayer.queue queueBitLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr recordingmode vector
+attr source "warmup(atomic(constant0(localSignal(packetPushEnded)) + sum(packetLength(localSignal(packetPushStarted))) - sum(packetLength(localSignal(packetPulled))) - sum(packetLength(localSignal(packetRemoved))) - sum(packetLength(localSignal(packetDropped)))))"
+attr title "queue bit length"
+attr unit b
+214	72691 45 257 258 0.01503106 0.01503106 2 0 1016 1016 1032256
+214	78256 45 366 367 0.02003106 0.02003106 2 0 1016 1016 1032256
+214	589365 4631 584 16490 0.03503106 0.99503106 194 0 1016 98552 100128832
+vector 215 S2C.tsnSwitch.eth[1].macLayer.queue.queue[1] queueingTime:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source queueingTime(packetPulled)
+attr title "queueing times"
+attr unit s
+215	72736 21 258 258 0.01503106 0.01503106 1 0 0 0 0
+215	78301 21 367 367 0.02003106 0.02003106 1 0 0 0 0
+215	593996 2170 585 16490 0.03503106 0.99503106 97 0 0 0 0
+vector 216 S2C.tsnSwitch.eth[1].macLayer.queue.queue[1] outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "outgoing packet lengths"
+attr unit b
+216	72757 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+216	78322 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+216	596166 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 217 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionSelectionAlgorithm[1] incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+217	72781 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+217	78346 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+217	598627 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 218 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionSelectionAlgorithm[1] outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+218	72805 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+218	78370 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+218	601088 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 219 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionGate[1] incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+219	72829 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+219	78394 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+219	603549 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 220 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionGate[1] outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+220	72853 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+220	78418 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+220	606010 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 221 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionSelection packetLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "packet lengths"
+attr unit b
+221	72877 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+221	78442 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+221	608471 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 222 S2C.tsnSwitch.eth[1].macLayer.queue queueingTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source queueingTime(localSignal(packetPulled))
+attr title "queueing times"
+attr unit s
+222	72901 21 258 258 0.01503106 0.01503106 1 0 0 0 0
+222	78466 21 367 367 0.02003106 0.02003106 1 0 0 0 0
+222	610932 2170 585 16490 0.03503106 0.99503106 97 0 0 0 0
+vector 223 S2C.tsnSwitch.eth[1].macLayer.queue outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(localSignal(packetPulled))
+attr title "outgoing packet lengths"
+attr unit b
+223	72922 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+223	78487 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+223	613102 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 224 S2C.tsnSwitch.eth[1].macLayer.server incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPulled)
+attr title "incoming packet lengths"
+attr unit b
+224	72946 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+224	78511 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+224	615563 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 225 S2C.tsnSwitch.eth[1].macLayer.server outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetLength(packetPushed)
+attr title "outgoing packet lengths"
+attr unit b
+225	72970 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+225	78535 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+225	618024 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 226 S2C.tsnSwitch.eth[1].macLayer.outboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+226	72994 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+226	78559 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+226	620485 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 227 S2C.tsnSwitch.eth[1].macLayer.outboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+227	73018 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+227	78583 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+227	622946 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 228 S2C.tsnSwitch.eth[1].phyLayer.phyHeaderInserter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+228	73042 24 258 258 0.01503106 0.01503106 1 1016 1016 1016 1032256
+228	78607 24 367 367 0.02003106 0.02003106 1 1016 1016 1016 1032256
+228	625407 2461 585 16490 0.03503106 0.99503106 97 1016 1016 98552 100128832
+vector 229 S2C.tsnSwitch.eth[1].phyLayer.phyHeaderInserter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+229	73066 24 258 258 0.01503106 0.01503106 1 1080 1080 1080 1166400
+229	78631 24 367 367 0.02003106 0.02003106 1 1080 1080 1080 1166400
+229	627868 2461 585 16490 0.03503106 0.99503106 97 1080 1080 104760 113140800
+vector 230 S2C.tsnSwitch.eth[1].phyLayer.outboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+230	73090 24 258 258 0.01503106 0.01503106 1 1080 1080 1080 1166400
+230	78655 24 367 367 0.02003106 0.02003106 1 1080 1080 1080 1166400
+230	630329 2461 585 16490 0.03503106 0.99503106 97 1080 1080 104760 113140800
+vector 231 S2C.tsnSwitch.eth[1].phyLayer.outboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+231	73114 24 258 258 0.01503106 0.01503106 1 1080 1080 1080 1166400
+231	78679 33205 367 367 0.02003106 0.02003106 1 1080 1080 1080 1166400
+231	632790 2461 585 16490 0.03503106 0.99503106 97 1080 1080 104760 113140800
+vector 232 S2C.tsnSwitch.eth[1].phyLayer.transmitter transmissionTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetDuration(transmissionEnded)
+attr title "transmission time"
+attr unit s
+232	73138 28 261 261 0.01504186 0.01504186 1 1.08e-05 1.08e-05 1.08e-05 1.1664e-10
+232	635251 2877 370 16493 0.02004186 0.99504186 98 1.08e-05 1.08e-05 0.0010584 1.143072e-08
+vector 233 S2C.Server.eth[0].phyLayer.receiver receptionTime:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source packetDuration(receptionEnded)
+attr title "reception time"
+attr unit s
+233	73166 28 262 262 0.01504191 0.01504191 1 1.08e-05 1.08e-05 1.08e-05 1.1664e-10
+233	638128 2877 371 16494 0.02004191 0.99504191 98 1.08e-05 1.08e-05 0.0010584 1.143072e-08
+vector 234 S2C.Server.eth[0].phyLayer.inboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+234	73194 24 262 262 0.01504191 0.01504191 1 1080 1080 1080 1166400
+234	641005 2485 371 16494 0.02004191 0.99504191 98 1080 1080 105840 114307200
+vector 235 S2C.Server.eth[0].phyLayer.inboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+235	73218 24 262 262 0.01504191 0.01504191 1 1080 1080 1080 1166400
+235	643490 2485 371 16494 0.02004191 0.99504191 98 1080 1080 105840 114307200
+vector 236 S2C.Server.eth[0].phyLayer.phyHeaderChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+236	73242 24 262 262 0.01504191 0.01504191 1 1080 1080 1080 1166400
+236	645975 2485 371 16494 0.02004191 0.99504191 98 1080 1080 105840 114307200
+vector 237 S2C.Server.eth[0].phyLayer.phyHeaderChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+237	73266 24 262 262 0.01504191 0.01504191 1 1016 1016 1016 1032256
+237	648460 2485 371 16494 0.02004191 0.99504191 98 1016 1016 99568 101161088
+vector 238 S2C.Server.eth[0].macLayer.inboundEmitter incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+238	73290 24 262 262 0.01504191 0.01504191 1 1016 1016 1016 1032256
+238	650945 2485 371 16494 0.02004191 0.99504191 98 1016 1016 99568 101161088
+vector 239 S2C.Server.eth[0].macLayer.inboundEmitter outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+239	73314 24 262 262 0.01504191 0.01504191 1 1016 1016 1016 1032256
+239	653430 2485 371 16494 0.02004191 0.99504191 98 1016 1016 99568 101161088
+vector 240 S2C.Server.eth[0].macLayer.fcsChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+240	73338 24 262 262 0.01504191 0.01504191 1 1016 1016 1016 1032256
+240	655915 2485 371 16494 0.02004191 0.99504191 98 1016 1016 99568 101161088
+vector 241 S2C.Server.eth[0].macLayer.fcsChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+241	73362 24 262 262 0.01504191 0.01504191 1 1016 1016 1016 1032256
+241	658400 2485 371 16494 0.02004191 0.99504191 98 1016 1016 99568 101161088
+vector 242 S2C.Server.ethernet.fcsChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+242	73386 24 262 262 0.01504191 0.01504191 1 1016 1016 1016 1032256
+242	660885 2485 371 16494 0.02004191 0.99504191 98 1016 1016 99568 101161088
+vector 243 S2C.Server.ethernet.fcsChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+243	73410 23 262 262 0.01504191 0.01504191 1 984 984 984 968256
+243	663370 2387 371 16494 0.02004191 0.99504191 98 984 984 96432 94889088
+vector 244 S2C.Server.ethernet.macHeaderChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+244	73433 23 262 262 0.01504191 0.01504191 1 984 984 984 968256
+244	665757 2387 371 16494 0.02004191 0.99504191 98 984 984 96432 94889088
+vector 245 S2C.Server.ethernet.macHeaderChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+245	73456 23 262 262 0.01504191 0.01504191 1 872 872 872 760384
+245	668144 2387 371 16494 0.02004191 0.99504191 98 872 872 85456 74517632
+vector 246 S2C.Server.ieee8021q.qTagHeaderChecker incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+246	73479 23 262 262 0.01504191 0.01504191 1 872 872 872 760384
+246	670531 2387 371 16494 0.02004191 0.99504191 98 872 872 85456 74517632
+vector 247 S2C.Server.ieee8021q.qTagHeaderChecker outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+247	73502 23 262 262 0.01504191 0.01504191 1 840 840 840 705600
+247	672918 2387 371 16494 0.02004191 0.99504191 98 840 840 82320 69148800
+vector 248 S2C.Server.bridging.streamCoder.decoder incomingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming packet lengths"
+attr unit b
+248	73525 23 262 262 0.01504191 0.01504191 1 840 840 840 705600
+248	675305 2387 371 16494 0.02004191 0.99504191 98 840 840 82320 69148800
+vector 249 S2C.Server.bridging.streamCoder.decoder outgoingPacketLengths:vector ETV
+attr interpolationmode none
+attr recordingmode vector
+attr source "packetLength(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing packet lengths"
+attr unit b
+249	73548 23 262 262 0.01504191 0.01504191 1 840 840 840 705600
+249	677692 2387 371 16494 0.02004191 0.99504191 98 840 840 82320 69148800
+vector 250 S2C.Server.udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr recordingmode vector(packetBytes)
+attr source packetReceived
+attr title "packets received, packetBytes"
+250	73571 763 264 264 0.01504191 0.01504191 1 85 85 85 7225
+250	680079 2289 373 16496 0.02004191 0.99504191 98 85 85 8330 708050
+vector 251 S2C.Server.app[1].io packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.Server.video.io
+attr recordingmode vector(packetBytes)
+attr source packetReceived
+attr title "packets received, packetBytes"
+251	74451 22 265 265 0.01504191 0.01504191 1 77 77 77 5929
+251	682368 2289 374 16497 0.02004191 0.99504191 98 77 77 7546 581042
+vector 252 S2C.Server.app[1].sink packetLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.Server.video.sink
+attr recordingmode vector
+attr source packetLength(packetPushed)
+attr title "packet lengths"
+attr unit b
+252	74473 23 266 266 0.01504191 0.01504191 1 616 616 616 379456
+252	684657 2387 375 16498 0.02004191 0.99504191 98 616 616 60368 37186688
+vector 253 S2C.Server.app[1].sink droppedPacketLengths:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.Server.video.sink
+attr recordingmode vector
+attr source packetLength(packetDropped)
+attr title "dropped packet lengths"
+attr unit b
+253	74496 23 266 266 0.01504191 0.01504191 1 616 616 616 379456
+253	687044 2387 375 16498 0.02004191 0.99504191 98 616 616 60368 37186688
+vector 254 S2C.Server.app[1].sink meanBitLifeTimePerPacket:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.Server.video.sink
+attr recordingmode vector
+attr source weightedMeanPerGroup(groupRegionsPerPacket(lifeTimePerRegion(packetPushed)))
+attr title "mean bit life time per packet"
+attr unit s
+254	689431 3073 375 16498 0.01504191 0.98004191 98 0.01004191 0.01504191 1.22910718 0.016027851631914
+vector 255 S2C.Server.app[1].sink packetJitter:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.Server.video.sink
+attr recordingmode vector
+attr source jitter(weightedMeanPerGroup(groupRegionsPerPacket(lifeTimePerRegion(packetPushed))))
+attr title "packet jitter"
+attr unit s
+255	692504 2637 375 16498 0.01504191 0.98004191 98 -0.005 0.01504191 0.01004191 0.0026512590564481
+vector 256 S2C.Server.app[1].sink packetDelayDifferenceToMean:vector ETV
+attr interpolationmode none
+attr moduledisplaypath S2C.Server.video.sink
+attr recordingmode vector
+attr source differenceToMean(weightedMeanPerGroup(groupRegionsPerPacket(lifeTimePerRegion(packetPushed))))
+attr title "packet delay difference to mean"
+attr unit s
+256	695141 3274 375 16498 0.01504191 0.98004191 98 -0.0024742268041237 0.0025 0.0073191845959344 0.00058358281881017
+vector 257 S2C.Server.app[1].sink packetDelayVariation:vector ETV
+attr moduledisplaypath S2C.Server.video.sink
+attr recordingmode vector
+attr source stddev(weightedMeanPerGroup(groupRegionsPerPacket(lifeTimePerRegion(packetPushed))))
+attr title "packet delay variation"
+attr unit s
+257	698415 3829 375 16498 0.01504191 0.98004191 98 0 0.0025001022247111 0.24221028615799 0.00060482554896599
+vector 258 S2C.Client1.app[0].source dataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.Client1.TCU.source
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "data rate"
+attr unit bps
+258	702244 174 1641 14889 0.1 0.9 9 61600 61600 554400 34151040000
+258	741623 32 16550 16550 0.999 0.999 1 62222.222222222 62222.222222222 62222.222222222 3871604938.2716
+vector 259 S2C.Client1.bridging.streamIdentifier.identifier incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+259	702418 174 1645 14897 0.1 0.9 9 84000 84000 756000 63504000000
+vector 260 S2C.Client1.bridging.streamIdentifier.identifier outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+260	702592 174 1645 14897 0.1 0.9 9 84000 84000 756000 63504000000
+vector 261 S2C.Client1.bridging.streamCoder.encoder incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+261	702766 174 1645 14897 0.1 0.9 9 84000 84000 756000 63504000000
+vector 262 S2C.Client1.bridging.streamCoder.encoder outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+262	702940 174 1645 14897 0.1 0.9 9 84000 84000 756000 63504000000
+vector 263 S2C.Client1.ieee8021q.qTagHeaderInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+263	703114 174 1645 14897 0.1 0.9 9 84000 84000 756000 63504000000
+vector 264 S2C.Client1.ieee8021q.qTagHeaderInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+264	703288 174 1645 14897 0.1 0.9 9 87200 87200 784800 68434560000
+vector 265 S2C.Client1.ethernet.macHeaderInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+265	703462 174 1645 14897 0.1 0.9 9 87200 87200 784800 68434560000
+vector 266 S2C.Client1.ethernet.macHeaderInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+266	703636 174 1645 14897 0.1 0.9 9 98400 98400 885600 87143040000
+vector 267 S2C.Client1.ethernet.paddingInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+267	703810 174 1645 14897 0.1 0.9 9 98400 98400 885600 87143040000
+vector 268 S2C.Client1.ethernet.paddingInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+268	703984 174 1645 14897 0.1 0.9 9 98400 98400 885600 87143040000
+vector 269 S2C.Client1.ethernet.fcsInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+269	704158 174 1645 14897 0.1 0.9 9 98400 98400 885600 87143040000
+vector 270 S2C.Client1.ethernet.fcsInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+270	704332 183 1645 14897 0.1 0.9 9 101600 101600 914400 92903040000
+vector 271 S2C.Client1.eth[0].macLayer.queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+271	704515 183 1645 14897 0.1 0.9 9 101600 101600 914400 92903040000
+271	741655 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 272 S2C.Client1.eth[0].macLayer.queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+272	704698 183 1646 14898 0.1 0.9 9 101600 101600 914400 92903040000
+272	741687 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 273 S2C.Client1.eth[0].macLayer.server incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "incoming datarate"
+attr unit bps
+273	704881 183 1646 14898 0.1 0.9 9 101600 101600 914400 92903040000
+273	741719 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 274 S2C.Client1.eth[0].macLayer.server outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "outgoing datarate"
+attr unit bps
+274	705064 183 1646 14898 0.1 0.9 9 101600 101600 914400 92903040000
+274	741751 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 275 S2C.Client1.eth[0].macLayer.outboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+275	705247 183 1646 14898 0.1 0.9 9 101600 101600 914400 92903040000
+vector 276 S2C.Client1.eth[0].macLayer.outboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+276	705430 183 1646 14898 0.1 0.9 9 101600 101600 914400 92903040000
+vector 277 S2C.Client1.eth[0].phyLayer.phyHeaderInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+277	705613 183 1646 14898 0.1 0.9 9 101600 101600 914400 92903040000
+vector 278 S2C.Client1.eth[0].phyLayer.phyHeaderInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+278	705796 183 1646 14898 0.1 0.9 9 108000 108000 972000 104976000000
+vector 279 S2C.Client1.eth[0].phyLayer.outboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+279	705979 183 1646 14898 0.1 0.9 9 108000 108000 972000 104976000000
+vector 280 S2C.Client1.eth[0].phyLayer.outboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+280	706162 183 1646 14898 0.1 0.9 9 108000 108000 972000 104976000000
+vector 281 S2C.Client1.eth[0].phyLayer.transmitter utilization:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "100 * utilization(count(transmissionStarted) - count(transmissionEnded))"
+attr title utilization
+attr unit %
+281	706345 174 1646 14898 0.1 0.9 9 0.108 0.108 0.972 0.104976
+vector 282 S2C.gnb.pppIf.queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+282	706519 183 1657 14909 0.1 0.9 9 143280 159200 1416880 223286278400
+282	741783 32 16550 16550 0.999 0.999 1 160808.08080808 160808.08080808 160808.08080808 25859238853.178
+vector 283 S2C.gnb.pppIf.queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+283	706702 183 1657 14909 0.1 0.9 9 143280 159200 1416880 223286278400
+283	741815 32 16550 16550 0.999 0.999 1 160808.08080808 160808.08080808 160808.08080808 25859238853.178
+vector 284 S2C.u1.DSTT.phyLayer.receiver throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(receptionEnded)
+attr title throughput
+attr unit bps
+284	706885 183 1663 14915 0.1 0.9 9 108000 108000 972000 104976000000
+284	741847 32 16550 16550 0.999 0.999 1 109090.90909091 109090.90909091 109090.90909091 11900826446.281
+vector 285 S2C.u1.DSTT.phyLayer.inboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+285	707068 183 1663 14915 0.1 0.9 9 108000 108000 972000 104976000000
+vector 286 S2C.u1.DSTT.phyLayer.inboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+286	707251 183 1663 14915 0.1 0.9 9 108000 108000 972000 104976000000
+vector 287 S2C.u1.DSTT.phyLayer.phyHeaderChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+287	707434 183 1663 14915 0.1 0.9 9 108000 108000 972000 104976000000
+vector 288 S2C.u1.DSTT.phyLayer.phyHeaderChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+288	707617 183 1663 14915 0.1 0.9 9 101600 101600 914400 92903040000
+vector 289 S2C.u1.DSTT.macLayer.inboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+289	707800 183 1663 14915 0.1 0.9 9 101600 101600 914400 92903040000
+vector 290 S2C.u1.DSTT.macLayer.inboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+290	707983 183 1663 14915 0.1 0.9 9 101600 101600 914400 92903040000
+vector 291 S2C.u1.DSTT.macLayer.fcsChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+291	708166 183 1663 14915 0.1 0.9 9 101600 101600 914400 92903040000
+vector 292 S2C.u1.DSTT.macLayer.fcsChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+292	708349 183 1663 14915 0.1 0.9 9 101600 101600 914400 92903040000
+vector 293 S2C.Client1.eth[0].phyLayer.transmitter throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(transmissionEnded)
+attr title throughput
+attr unit bps
+293	708532 183 1664 14916 0.1 0.9 9 108000 108000 972000 104976000000
+293	741879 32 16550 16550 0.999 0.999 1 109090.90909091 109090.90909091 109090.90909091 11900826446.281
+vector 294 S2C.upf.NWTT.macLayer.queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+294	708715 182 1684 14936 0.1 0.9 9 91440 101600 904240 90941753600
+294	741911 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 295 S2C.upf.NWTT.macLayer.queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+295	708897 182 1685 14937 0.1 0.9 9 91440 101600 904240 90941753600
+295	741943 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 296 S2C.upf.NWTT.macLayer.server incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "incoming datarate"
+attr unit bps
+296	709079 182 1685 14937 0.1 0.9 9 91440 101600 904240 90941753600
+296	741975 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 297 S2C.upf.NWTT.macLayer.server outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "outgoing datarate"
+attr unit bps
+297	709261 182 1685 14937 0.1 0.9 9 91440 101600 904240 90941753600
+297	742007 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 298 S2C.upf.NWTT.macLayer.outboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+298	709443 182 1685 14937 0.1 0.9 9 91440 101600 904240 90941753600
+vector 299 S2C.upf.NWTT.macLayer.outboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+299	709625 182 1685 14937 0.1 0.9 9 91440 101600 904240 90941753600
+vector 300 S2C.upf.NWTT.phyLayer.phyHeaderInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+300	709807 182 1685 14937 0.1 0.9 9 91440 101600 904240 90941753600
+vector 301 S2C.upf.NWTT.phyLayer.phyHeaderInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+301	709989 182 1685 14937 0.1 0.9 9 97200 108000 961200 102759840000
+vector 302 S2C.upf.NWTT.phyLayer.outboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+302	710171 182 1685 14937 0.1 0.9 9 97200 108000 961200 102759840000
+vector 303 S2C.upf.NWTT.phyLayer.outboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+303	710353 182 1685 14937 0.1 0.9 9 97200 108000 961200 102759840000
+vector 304 S2C.upf.NWTT.phyLayer.transmitter utilization:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "100 * utilization(count(transmissionStarted) - count(transmissionEnded))"
+attr title utilization
+attr unit %
+304	710535 184 1685 14937 0.1 0.9 9 0.13032 0.1448 1.28872 0.1847196224
+vector 305 S2C.upf.NWTT.phyLayer.transmitter throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(transmissionEnded)
+attr title throughput
+attr unit bps
+305	710719 182 1686 14938 0.1 0.9 9 97200 108000 961200 102759840000
+305	742039 32 16550 16550 0.999 0.999 1 109090.90909091 109090.90909091 109090.90909091 11900826446.281
+vector 306 S2C.tsnSwitch.eth[0].phyLayer.receiver throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(receptionEnded)
+attr title throughput
+attr unit bps
+306	710901 182 1687 14939 0.1 0.9 9 97200 108000 961200 102759840000
+306	742071 32 16550 16550 0.999 0.999 1 109090.90909091 109090.90909091 109090.90909091 11900826446.281
+vector 307 S2C.tsnSwitch.eth[0].phyLayer.inboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+307	711083 182 1687 14939 0.1 0.9 9 97200 108000 961200 102759840000
+vector 308 S2C.tsnSwitch.eth[0].phyLayer.inboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+308	711265 182 1687 14939 0.1 0.9 9 97200 108000 961200 102759840000
+vector 309 S2C.tsnSwitch.eth[0].phyLayer.phyHeaderChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+309	711447 182 1687 14939 0.1 0.9 9 97200 108000 961200 102759840000
+vector 310 S2C.tsnSwitch.eth[0].phyLayer.phyHeaderChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+310	711629 182 1687 14939 0.1 0.9 9 91440 101600 904240 90941753600
+vector 311 S2C.tsnSwitch.eth[0].macLayer.inboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+311	711811 182 1687 14939 0.1 0.9 9 91440 101600 904240 90941753600
+vector 312 S2C.tsnSwitch.eth[0].macLayer.inboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+312	711993 182 1687 14939 0.1 0.9 9 91440 101600 904240 90941753600
+vector 313 S2C.tsnSwitch.eth[0].macLayer.fcsChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+313	712175 182 1687 14939 0.1 0.9 9 91440 101600 904240 90941753600
+vector 314 S2C.tsnSwitch.eth[0].macLayer.fcsChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+314	712357 182 1687 14939 0.1 0.9 9 91440 101600 904240 90941753600
+vector 315 S2C.tsnSwitch.ethernet.fcsChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+315	712539 182 1687 14939 0.1 0.9 9 91440 101600 904240 90941753600
+vector 316 S2C.tsnSwitch.ethernet.fcsChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+316	712721 174 1687 14939 0.1 0.9 9 88560 98400 875760 85303353600
+vector 317 S2C.tsnSwitch.ethernet.macHeaderChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+317	712895 174 1687 14939 0.1 0.9 9 88560 98400 875760 85303353600
+vector 318 S2C.tsnSwitch.ethernet.macHeaderChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+318	713069 174 1687 14939 0.1 0.9 9 78480 87200 776080 66989830400
+vector 319 S2C.tsnSwitch.ieee8021q.qTagHeaderChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+319	713243 174 1687 14939 0.1 0.9 9 78480 87200 776080 66989830400
+vector 320 S2C.tsnSwitch.ieee8021q.qTagHeaderChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+320	713417 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 321 S2C.tsnSwitch.bridging.interfaceRelay.learner incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+321	713591 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 322 S2C.tsnSwitch.bridging.interfaceRelay.learner outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+322	713765 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 323 S2C.tsnSwitch.bridging.streamCoder.decoder incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+323	713939 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 324 S2C.tsnSwitch.bridging.streamCoder.decoder outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+324	714113 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 325 S2C.tsnSwitch.bridging.streamFilter.ingress.classifier dataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "data rate"
+attr unit bps
+325	714287 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+325	742103 32 16550 16550 0.999 0.999 1 84848.484848485 84848.484848485 84848.484848485 7199265381.0836
+vector 326 S2C.tsnSwitch.bridging.streamFilter.ingress.gate[1] incomingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+326	714461 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 327 S2C.tsnSwitch.bridging.streamFilter.ingress.gate[1] outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+327	714635 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 328 S2C.tsnSwitch.bridging.streamFilter.ingress.meter[1] incomingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+328	714809 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 329 S2C.tsnSwitch.bridging.streamFilter.ingress.meter[1] outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+329	714983 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 330 S2C.tsnSwitch.bridging.streamFilter.ingress.filter[1] incomingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+330	715157 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 331 S2C.tsnSwitch.bridging.streamFilter.ingress.filter[1] outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+331	715331 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 332 S2C.tsnSwitch.bridging.streamFilter.ingress.barrier incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+332	715505 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 333 S2C.tsnSwitch.bridging.streamFilter.ingress.barrier outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+333	715679 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 334 S2C.tsnSwitch.bridging.directionReverser.reverser incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+334	715853 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 335 S2C.tsnSwitch.bridging.directionReverser.reverser outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+335	716027 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 336 S2C.tsnSwitch.bridging.streamIdentifier.identifier incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+336	716201 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 337 S2C.tsnSwitch.bridging.streamIdentifier.identifier outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+337	716375 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 338 S2C.tsnSwitch.bridging.streamCoder.encoder incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+338	716549 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 339 S2C.tsnSwitch.bridging.streamCoder.encoder outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+339	716723 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 340 S2C.tsnSwitch.ieee8021q.qTagHeaderInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+340	716897 174 1687 14939 0.1 0.9 9 75600 84000 747600 62163360000
+vector 341 S2C.tsnSwitch.ieee8021q.qTagHeaderInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+341	717071 174 1687 14939 0.1 0.9 9 78480 87200 776080 66989830400
+vector 342 S2C.tsnSwitch.ethernet.macHeaderInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+342	717245 174 1687 14939 0.1 0.9 9 78480 87200 776080 66989830400
+vector 343 S2C.tsnSwitch.ethernet.macHeaderInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+343	717419 174 1687 14939 0.1 0.9 9 88560 98400 875760 85303353600
+vector 344 S2C.tsnSwitch.ethernet.paddingInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+344	717593 174 1687 14939 0.1 0.9 9 88560 98400 875760 85303353600
+vector 345 S2C.tsnSwitch.ethernet.paddingInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+345	717767 174 1687 14939 0.1 0.9 9 88560 98400 875760 85303353600
+vector 346 S2C.tsnSwitch.ethernet.fcsInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+346	717941 174 1687 14939 0.1 0.9 9 88560 98400 875760 85303353600
+vector 347 S2C.tsnSwitch.ethernet.fcsInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+347	718115 182 1687 14939 0.1 0.9 9 91440 101600 904240 90941753600
+vector 348 S2C.tsnSwitch.eth[1].macLayer.queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(localSignal(packetPushStarted))
+attr title "incoming datarate"
+attr unit bps
+348	718297 182 1687 14939 0.1 0.9 9 91440 101600 904240 90941753600
+vector 349 S2C.tsnSwitch.eth[1].macLayer.queue.classifier dataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "data rate"
+attr unit bps
+349	718479 182 1687 14939 0.1 0.9 9 91440 101600 904240 90941753600
+349	742135 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 350 S2C.tsnSwitch.eth[1].macLayer.queue.queue[1] incomingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+350	718661 182 1687 14939 0.1 0.9 9 91440 101600 904240 90941753600
+350	742167 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 351 S2C.tsnSwitch.eth[1].macLayer.queue.queue[1] outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+351	718843 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+351	742199 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 352 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionSelectionAlgorithm[1] incomingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+352	719025 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+vector 353 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionSelectionAlgorithm[1] outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+353	719207 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+vector 354 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionGate[1] incomingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+354	719389 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+vector 355 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionGate[1] outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.video
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+355	719571 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+vector 356 S2C.tsnSwitch.eth[1].macLayer.queue.transmissionSelection dataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "data rate"
+attr unit bps
+356	719753 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+356	742231 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 357 S2C.tsnSwitch.eth[1].macLayer.queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(localSignal(packetPulled))
+attr title "outgoing datarate"
+attr unit bps
+357	719935 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+vector 358 S2C.tsnSwitch.eth[1].macLayer.server incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "incoming datarate"
+attr unit bps
+358	720117 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+358	742263 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 359 S2C.tsnSwitch.eth[1].macLayer.server outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "outgoing datarate"
+attr unit bps
+359	720299 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+359	742295 32 16550 16550 0.999 0.999 1 102626.26262626 102626.26262626 102626.26262626 10532149780.634
+vector 360 S2C.tsnSwitch.eth[1].macLayer.outboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+360	720481 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+vector 361 S2C.tsnSwitch.eth[1].macLayer.outboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+361	720663 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+vector 362 S2C.tsnSwitch.eth[1].phyLayer.phyHeaderInserter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+362	720845 182 1688 14940 0.1 0.9 9 91440 101600 904240 90941753600
+vector 363 S2C.tsnSwitch.eth[1].phyLayer.phyHeaderInserter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+363	721027 182 1688 14940 0.1 0.9 9 97200 108000 961200 102759840000
+vector 364 S2C.tsnSwitch.eth[1].phyLayer.outboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+364	721209 182 1688 14940 0.1 0.9 9 97200 108000 961200 102759840000
+vector 365 S2C.tsnSwitch.eth[1].phyLayer.outboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+365	721391 182 1688 14940 0.1 0.9 9 97200 108000 961200 102759840000
+vector 366 S2C.tsnSwitch.eth[1].phyLayer.transmitter utilization:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "100 * utilization(count(transmissionStarted) - count(transmissionEnded))"
+attr title utilization
+attr unit %
+366	721573 175 1688 14940 0.1 0.9 9 0.0972 0.108 0.9612 0.10275984
+vector 367 S2C.tsnSwitch.eth[1].phyLayer.transmitter throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(transmissionEnded)
+attr title throughput
+attr unit bps
+367	721748 182 1691 14943 0.1 0.9 9 97200 108000 961200 102759840000
+367	742327 32 16550 16550 0.999 0.999 1 109090.90909091 109090.90909091 109090.90909091 11900826446.281
+vector 368 S2C.Server.eth[0].phyLayer.receiver throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(receptionEnded)
+attr title throughput
+attr unit bps
+368	721930 182 1692 14944 0.1 0.9 9 97200 108000 961200 102759840000
+368	742359 32 16550 16550 0.999 0.999 1 109090.90909091 109090.90909091 109090.90909091 11900826446.281
+vector 369 S2C.Server.eth[0].phyLayer.inboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+369	722112 182 1692 14944 0.1 0.9 9 97200 108000 961200 102759840000
+vector 370 S2C.Server.eth[0].phyLayer.inboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+370	722294 182 1692 14944 0.1 0.9 9 97200 108000 961200 102759840000
+vector 371 S2C.Server.eth[0].phyLayer.phyHeaderChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+371	722476 182 1692 14944 0.1 0.9 9 97200 108000 961200 102759840000
+vector 372 S2C.Server.eth[0].phyLayer.phyHeaderChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+372	722658 182 1692 14944 0.1 0.9 9 91440 101600 904240 90941753600
+vector 373 S2C.Server.eth[0].macLayer.inboundEmitter incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+373	722840 182 1692 14944 0.1 0.9 9 91440 101600 904240 90941753600
+vector 374 S2C.Server.eth[0].macLayer.inboundEmitter outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+374	723022 182 1692 14944 0.1 0.9 9 91440 101600 904240 90941753600
+vector 375 S2C.Server.eth[0].macLayer.fcsChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+375	723204 182 1692 14944 0.1 0.9 9 91440 101600 904240 90941753600
+vector 376 S2C.Server.eth[0].macLayer.fcsChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+376	723386 182 1692 14944 0.1 0.9 9 91440 101600 904240 90941753600
+vector 377 S2C.Server.ethernet.fcsChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+377	723568 182 1692 14944 0.1 0.9 9 91440 101600 904240 90941753600
+vector 378 S2C.Server.ethernet.fcsChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+378	723750 174 1692 14944 0.1 0.9 9 88560 98400 875760 85303353600
+vector 379 S2C.Server.ethernet.macHeaderChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+379	723924 174 1692 14944 0.1 0.9 9 88560 98400 875760 85303353600
+vector 380 S2C.Server.ethernet.macHeaderChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+380	724098 174 1692 14944 0.1 0.9 9 78480 87200 776080 66989830400
+vector 381 S2C.Server.ieee8021q.qTagHeaderChecker incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+381	724272 174 1692 14944 0.1 0.9 9 78480 87200 776080 66989830400
+vector 382 S2C.Server.ieee8021q.qTagHeaderChecker outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+382	724446 174 1692 14944 0.1 0.9 9 75600 84000 747600 62163360000
+vector 383 S2C.Server.bridging.streamCoder.decoder incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedIn, packetPulledIn))"
+attr title "incoming data rate"
+attr unit bps
+383	724620 174 1692 14944 0.1 0.9 9 75600 84000 747600 62163360000
+vector 384 S2C.Server.bridging.streamCoder.decoder outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source "throughput(merge(packetPushedOut, packetPulledOut))"
+attr title "outgoing data rate"
+attr unit bps
+384	724794 174 1692 14944 0.1 0.9 9 75600 84000 747600 62163360000
+vector 385 S2C.Server.app[1].sink dataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.Server.video.sink
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "data rate"
+attr unit bps
+385	724968 174 1696 14948 0.1 0.9 9 55440 61600 548240 33430073600
+385	742391 32 16550 16550 0.999 0.999 1 62222.222222222 62222.222222222 62222.222222222 3871604938.2716
+vector 386 S2C.Server.app[1].sink droppedDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.Server.video.sink
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+386	725142 16311 1696 14948 0.1 0.9 9 55440 61600 548240 33430073600
+386	742423 32 16550 16550 0.999 0.999 1 62222.222222222 62222.222222222 62222.222222222 3871604938.2716
+vector 387 S2C.Server.ethernet.macHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+387	742455 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 388 S2C.Server.ethernet.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+388	742617 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 389 S2C.Server.ieee8021q.qTagHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+389	742779 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 390 S2C.Server.eth[0].macLayer.queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+390	742941 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 391 S2C.Server.eth[0].macLayer.queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+391	743103 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 392 S2C.Server.eth[0].macLayer.server incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "incoming datarate"
+attr unit bps
+392	743265 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 393 S2C.Server.eth[0].macLayer.server outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "outgoing datarate"
+attr unit bps
+393	743427 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 394 S2C.Server.eth[0].macLayer.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+394	743589 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 395 S2C.Server.eth[0].phyLayer.transmitter throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(transmissionEnded)
+attr title throughput
+attr unit bps
+395	743751 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 396 S2C.Server.eth[0].phyLayer.phyHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+396	743913 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 397 S2C.Server.app[0].sink dataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.Server.besteffort.sink
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "data rate"
+attr unit bps
+397	744075 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 398 S2C.Server.app[0].sink droppedDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.Server.besteffort.sink
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+398	744237 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 399 S2C.tsnSwitch.bridging.streamFilter.ingress.filter[0] droppedDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.besteffort
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+399	744399 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 400 S2C.tsnSwitch.bridging.streamFilter.ingress.filter[1] droppedDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.bridging.streamFilter.ingress.video
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+400	744561 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 401 S2C.tsnSwitch.ethernet.macHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+401	744723 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 402 S2C.tsnSwitch.ethernet.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+402	744885 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 403 S2C.tsnSwitch.ieee8021q.qTagHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+403	745047 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 404 S2C.tsnSwitch.ieee8021r.rTagHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+404	745209 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 405 S2C.tsnSwitch.eth[0].macLayer.queue.classifier dataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "data rate"
+attr unit bps
+405	745371 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 406 S2C.tsnSwitch.eth[0].macLayer.queue.queue[0] outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.besteffort
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+406	745533 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 407 S2C.tsnSwitch.eth[0].macLayer.queue.queue[0] incomingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.besteffort
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+407	745695 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 408 S2C.tsnSwitch.eth[0].macLayer.queue.queue[1] outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.video
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+408	745857 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 409 S2C.tsnSwitch.eth[0].macLayer.queue.queue[1] incomingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[0].macLayer.queue.video
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+409	746019 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 410 S2C.tsnSwitch.eth[0].macLayer.queue.transmissionSelection dataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "data rate"
+attr unit bps
+410	746181 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 411 S2C.tsnSwitch.eth[0].macLayer.server incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "incoming datarate"
+attr unit bps
+411	746343 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 412 S2C.tsnSwitch.eth[0].macLayer.server outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "outgoing datarate"
+attr unit bps
+412	746505 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 413 S2C.tsnSwitch.eth[0].macLayer.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+413	746667 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 414 S2C.tsnSwitch.eth[0].phyLayer.transmitter throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(transmissionEnded)
+attr title throughput
+attr unit bps
+414	746829 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 415 S2C.tsnSwitch.eth[0].phyLayer.phyHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+415	746991 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 416 S2C.tsnSwitch.eth[1].macLayer.queue.queue[0] outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.besteffort
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+416	747153 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 417 S2C.tsnSwitch.eth[1].macLayer.queue.queue[0] incomingDataRate:vector ETV
+attr interpolationmode linear
+attr moduledisplaypath S2C.tsnSwitch.eth[1].macLayer.queue.besteffort
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+417	747315 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 418 S2C.tsnSwitch.eth[1].macLayer.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+418	747477 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 419 S2C.tsnSwitch.eth[1].phyLayer.phyHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+419	747639 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 420 S2C.tsnSwitch.eth[1].phyLayer.receiver throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(receptionEnded)
+attr title throughput
+attr unit bps
+420	747801 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 421 S2C.upf.ppp[0].queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+421	747963 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 422 S2C.upf.ppp[0].queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+422	748125 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 423 S2C.upf.NWTT.macLayer.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+423	748287 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 424 S2C.upf.NWTT.phyLayer.phyHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+424	748449 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 425 S2C.upf.NWTT.phyLayer.receiver throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(receptionEnded)
+attr title throughput
+attr unit bps
+425	748611 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 426 S2C.gnb.pppMEHostIf.queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+426	748773 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 427 S2C.gnb.pppMEHostIf.queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+427	748935 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 428 S2C.Client1.ethernet.macHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+428	749097 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 429 S2C.Client1.ethernet.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+429	749259 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 430 S2C.Client1.ieee8021q.qTagHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+430	749421 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 431 S2C.Client1.eth[0].macLayer.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+431	749583 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 432 S2C.Client1.eth[0].phyLayer.phyHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+432	749745 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 433 S2C.Client1.eth[0].phyLayer.receiver throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(receptionEnded)
+attr title throughput
+attr unit bps
+433	749907 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 434 S2C.u1.DSTT.macLayer.queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+434	750069 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 435 S2C.u1.DSTT.macLayer.queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+435	750231 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 436 S2C.u1.DSTT.macLayer.server incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "incoming datarate"
+attr unit bps
+436	750393 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 437 S2C.u1.DSTT.macLayer.server outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "outgoing datarate"
+attr unit bps
+437	750555 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 438 S2C.u1.DSTT.macLayer.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+438	750717 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 439 S2C.u1.DSTT.phyLayer.transmitter throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(transmissionEnded)
+attr title throughput
+attr unit bps
+439	750879 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 440 S2C.u1.DSTT.phyLayer.phyHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+440	751041 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 441 S2C.Client2.ethernet.macHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+441	751203 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 442 S2C.Client2.ethernet.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+442	751365 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 443 S2C.Client2.ieee8021q.qTagHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+443	751527 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 444 S2C.Client2.eth[0].macLayer.queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+444	751689 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 445 S2C.Client2.eth[0].macLayer.queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+445	751851 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 446 S2C.Client2.eth[0].macLayer.server incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "incoming datarate"
+attr unit bps
+446	752013 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 447 S2C.Client2.eth[0].macLayer.server outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "outgoing datarate"
+attr unit bps
+447	752175 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 448 S2C.Client2.eth[0].macLayer.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+448	752337 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 449 S2C.Client2.eth[0].phyLayer.transmitter throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(transmissionEnded)
+attr title throughput
+attr unit bps
+449	752499 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 450 S2C.Client2.eth[0].phyLayer.phyHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+450	752661 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 451 S2C.Client2.eth[0].phyLayer.receiver throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(receptionEnded)
+attr title throughput
+attr unit bps
+451	752823 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 452 S2C.u2.DSTT.macLayer.queue outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "outgoing datarate"
+attr unit bps
+452	752985 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 453 S2C.u2.DSTT.macLayer.queue incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushStarted)
+attr title "incoming datarate"
+attr unit bps
+453	753147 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 454 S2C.u2.DSTT.macLayer.server incomingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPulled)
+attr title "incoming datarate"
+attr unit bps
+454	753309 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 455 S2C.u2.DSTT.macLayer.server outgoingDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetPushed)
+attr title "outgoing datarate"
+attr unit bps
+455	753471 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 456 S2C.u2.DSTT.macLayer.fcsChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+456	753633 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 457 S2C.u2.DSTT.phyLayer.transmitter throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(transmissionEnded)
+attr title throughput
+attr unit bps
+457	753795 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 458 S2C.u2.DSTT.phyLayer.phyHeaderChecker droppedDataRate:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(packetDropped)
+attr title "dropped data rate"
+attr unit bps
+458	753957 162 16550 16550 0.1 0.999 10 0 0 0 0
+vector 459 S2C.u2.DSTT.phyLayer.receiver throughput:vector ETV
+attr interpolationmode linear
+attr recordingmode vector
+attr source throughput(receptionEnded)
+attr title throughput
+attr unit bps
+459	754119 163 16550 16550 0.1 0.999 10 0 0 0 0

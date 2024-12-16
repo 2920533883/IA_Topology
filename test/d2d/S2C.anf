@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<analysis version="2">
+    <inputs>
+        <input pattern="/test/d2d/results/S2C-*.vec"/>
+        <input pattern="/test/d2d/results/S2C-*.sca"/>
+    </inputs>
+    <charts/>
+</analysis>
